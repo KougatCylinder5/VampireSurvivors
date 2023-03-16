@@ -90,7 +90,7 @@ public class GameManager : MonoBehaviour
         {
             for (int z = -450; z < 500; z += 50)
             {
-                Instantiate(enemySpawnPrefab, new Vector3(x, 0, z), new Quaternion());
+                Instantiate(enemySpawnPrefab, new Vector3(x, 15, z), new Quaternion());
             }
         }
     }

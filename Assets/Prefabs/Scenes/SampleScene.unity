@@ -251,11 +251,7 @@ MonoBehaviour:
   levelBar: {fileID: 1095911308}
   healthBar: {fileID: 1936671333}
   rewardPanel: {fileID: 382145776}
-  enemySpawns: []
   enemySpawnPrefab: {fileID: 4817744621503324025, guid: 80969ebd77075094caa093b98d442767, type: 3}
-  playerController: {fileID: 0}
-  targets: []
-  pointers: []
   pointerImage: {fileID: 4038956696680788187, guid: ba3732b457a47304b93ddfb09a496c52, type: 3}
 --- !u!1 &382145776
 GameObject:
@@ -938,7 +934,7 @@ GameObject:
   - component: {fileID: 1224161080}
   m_Layer: 0
   m_Name: Object 1
-  m_TagString: Untagged
+  m_TagString: Collectables
   m_Icon: {fileID: 8418204508859773708, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -950,8 +946,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1224161079}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -235.28, y: 1.662, z: -88.8}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -17, y: 1.166, z: -3.2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
