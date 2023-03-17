@@ -98,13 +98,17 @@ public class GameManager : MonoBehaviour
             pos.x -= cameraXMax / 2;
 
             pointers[i].transform.eulerAngles = new Vector3(0, 0, (float)(Math.Atan2(pos.y, pos.x) * 180 / Math.PI));
+            pointers[i].transform.GetChild(0).eulerAngles = Vector3.zero;
+            pointers[i].transform.GetChild(0).GetComponent<TextMeshProUGUI>().text =(Mathf.Round(pos.magnitude/10)-10).ToString();
             if (pos.magnitude < 100)
             {
                 pointers[i].GetComponent<Image>().color = new Color(255, 255, 255, 0);
+                pointers[i].transform.GetChild(0).GetComponent<TextMeshProUGUI>().color = new Color(255, 255, 255, 0);
             }
             else if (pos.magnitude < 250)
             {
                 pointers[i].GetComponent<Image>().color = new Color(255, 255, 255, (pos.magnitude - 100) / 150);
+                pointers[i].transform.GetChild(0).GetComponent<TextMeshProUGUI>().color = new Color(255, 255, 255, (pos.magnitude - 100) / 150);
             }
         }
 
