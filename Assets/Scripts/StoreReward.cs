@@ -10,5 +10,6 @@ public class StoreReward : MonoBehaviour
     public void setRewardInfo(Upgrade upgrade)
     {
         upgradeInfo = upgrade;
+        gameObject.transform.GetChild(0).gameObject.GetComponent<TooltipText>().UpdateTooltip(upgrade);
     }
 }

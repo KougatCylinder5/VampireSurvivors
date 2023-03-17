@@ -31,17 +31,6 @@ public class GoToPlayer : MonoBehaviour
     private void checkHealth()
     {
         if (health <= 0)
-
-        /* Unmerged change from project 'Assembly-CSharp.Player'
-        Before:
-                {
-
-                    float randomDrop = Random.Range(0, 100f);
-        After:
-                {
-
-                    float randomDrop = Random.Range(0, 100f);
-        */
         {
 
             float randomDrop = Random.Range(0, 100f);

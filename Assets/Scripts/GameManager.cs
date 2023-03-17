@@ -147,7 +147,7 @@ public class GameManager : MonoBehaviour
         {
             levelNumber.text = "Level: " + level.ToString();
             level++;
-            levelXPRequired *= 1.5f;
+            levelXPRequired += 15f;
             levelXP = 0;
             displayUpgrades();
         }
@@ -155,14 +155,21 @@ public class GameManager : MonoBehaviour
 
     private void displayUpgrades()
     {
-        Time.timeScale = 0;
+        Time.timeScale = 0f;
         rewardPanel.SetActive(true);
+
+        HashSet<int> numbersPicked = new HashSet<int>();
+
         for(int i = 0; i < 3; i++)
         {
 
             GameObject buttonObject = rewardPanel.transform.GetChild(i).gameObject;
             Image image = buttonObject.GetComponent<Image>();
-            int choice = new System.Random().Next(upgrades.Count);
+            int choice;
+            do
+            {
+                choice = UnityEngine.Random.Range(0, upgrades.Count);
+            } while (!numbersPicked.Add(choice));
             Sprite graphic = Resources.Load<Sprite>(upgrades[choice].pathToImage);
             image.sprite = graphic;
             buttonObject.GetComponent<StoreReward>().setRewardInfo(upgrades[choice]);
