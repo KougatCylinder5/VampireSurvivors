@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -31,9 +30,20 @@ public class GoToPlayer : MonoBehaviour
 
     private void checkHealth()
     {
-        if (health <= 0) 
+        if (health <= 0)
+
+        /* Unmerged change from project 'Assembly-CSharp.Player'
+        Before:
+                {
+
+                    float randomDrop = Random.Range(0, 100f);
+        After:
+                {
+
+                    float randomDrop = Random.Range(0, 100f);
+        */
         {
-            
+
             float randomDrop = Random.Range(0, 100f);
 
             if (randomDrop <= 10)
@@ -58,7 +68,7 @@ public class GoToPlayer : MonoBehaviour
     {
         return damage;
     }
-    public void takeDamage(int dmg) 
+    public void takeDamage(int dmg)
     {
         health -= dmg;
         GetComponent<MeshRenderer>().material = dmgMaterial;
@@ -66,7 +76,7 @@ public class GoToPlayer : MonoBehaviour
     }
     public IEnumerator resetAppearance()
     {
-        
+
         yield return new WaitForSeconds(0.5f);
         GetComponent<MeshRenderer>().material = normalMaterial;
 

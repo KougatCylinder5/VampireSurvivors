@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -21,10 +18,14 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        move();
-        if(health <= 0)
+
+        if (health <= 0)
         {
 
+        }
+        else
+        {
+            move();
         }
 
     }
@@ -34,8 +35,8 @@ public class PlayerController : MonoBehaviour
         float horizontalInput = Input.GetAxis("Horizontal");
         float verticalInput = Input.GetAxis("Vertical");
         Vector3 movement = new Vector3(horizontalInput * Time.deltaTime * speed, -9.81f * Time.deltaTime, verticalInput * Time.deltaTime * speed);
-        
-        if(new Vector2(horizontalInput,verticalInput) != Vector2.zero)
+
+        if (new Vector2(horizontalInput, verticalInput) != Vector2.zero)
         {
             transform.rotation = Quaternion.LookRotation(new(movement.x, 0, movement.z), transform.up);
         }

@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.XR;
 
 public class Whip : MonoBehaviour
 {
@@ -27,11 +26,23 @@ public class Whip : MonoBehaviour
 
     }
 
-    public IEnumerator attack() {
+    public IEnumerator attack()
+    {
         while (true)
         {
+
+            /* Unmerged change from project 'Assembly-CSharp.Player'
+            Before:
+                        yield return new WaitForSeconds((float)attackSpeed);
+
+                        whipOut.SetTrigger("Attack");
+            After:
+                        yield return new WaitForSeconds((float)attackSpeed);
+
+                        whipOut.SetTrigger("Attack");
+            */
             yield return new WaitForSeconds((float)attackSpeed);
-            
+
             whipOut.SetTrigger("Attack");
             foreach (MeshRenderer mesh in meshes)
             {
@@ -63,12 +74,12 @@ public class Whip : MonoBehaviour
 
     public void OnTriggerStay(Collider other)
     {
-        
+
         if (other.gameObject.CompareTag("Enemy"))
         {
             enemies.Add(other.gameObject);
         }
-        
+
     }
 
     public void OnTriggerExit(Collider other)
@@ -79,5 +90,5 @@ public class Whip : MonoBehaviour
         }
     }
 
-    
+
 }
