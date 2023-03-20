@@ -11,6 +11,7 @@ TagManager:
   - EnemySpawns
   - Health
   - Collectables
+  - Placeholder
   layers:
   - Default
   - TransparentFX

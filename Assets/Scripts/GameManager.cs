@@ -37,7 +37,7 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        InvokeRepeating("spawnEnemies", 0, 3f);
+        InvokeRepeating("spawnEnemies", 1, 3f);
         player = GameObject.Find("Player");
         playerController = player.GetComponent<PlayerController>();
         spawnSpawns();
@@ -122,7 +122,7 @@ public class GameManager : MonoBehaviour
         {
             for (int z = -450; z < 500; z += 50)
             {
-                Instantiate(enemySpawnPrefab, new Vector3(x, 15, z), new Quaternion());
+                Instantiate(enemySpawnPrefab, new Vector3(x, 25, z), new Quaternion());
             }
         }
     }
