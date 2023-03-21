@@ -37,7 +37,7 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        InvokeRepeating("spawnEnemies", 1, 3f);
+        InvokeRepeating("spawnEnemies", 1, 20f);
         player = GameObject.Find("Player");
         playerController = player.GetComponent<PlayerController>();
         spawnSpawns();
@@ -102,7 +102,7 @@ public class GameManager : MonoBehaviour
             pointers[i].transform.eulerAngles = new Vector3(0, 0, (float)(Math.Atan2(pos.y, pos.x) * 180 / Math.PI));
             Transform pointerChild = pointers[i].transform.GetChild(0); 
             pointerChild.eulerAngles = Vector3.zero;
-            pointerChild.GetComponent<TextMeshProUGUI>().text = (Mathf.Round(pos.magnitude/10)-15).ToString();
+            pointerChild.GetComponent<TextMeshProUGUI>().text = Mathf.RoundToInt((targets[i].transform.position-player.transform.position).magnitude).ToString();
             if (pos.magnitude < pointerDistDrop)
             {
                 pointers[i].GetComponent<Image>().color = new Color(255, 255, 255, 0);
@@ -137,9 +137,12 @@ public class GameManager : MonoBehaviour
             {
                 startPos++;
             }
-            for (int i = startPos; i < startPos + level; i++)
+            for (int i = startPos; i < startPos + level + 2; i++)
             {
-                Instantiate(enemies, closeInOrder[i].transform.position, closeInOrder[i].transform.rotation);
+                for (int j = 0; j < UnityEngine.Random.Range(5, 11); j++)
+                {
+                    Instantiate(enemies, closeInOrder[i].transform.position, closeInOrder[i].transform.rotation);
+                }
 
             }
         }
@@ -152,8 +155,8 @@ public class GameManager : MonoBehaviour
 
         if (levelXP >= levelXPRequired)
         {
-            levelNumber.text = "Level: " + level.ToString();
             level++;
+            levelNumber.text = "Level: " + level.ToString();
             levelXPRequired += 15f;
             levelXP = 0;
             displayUpgrades();
