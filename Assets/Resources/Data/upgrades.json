@@ -4,19 +4,22 @@
       "name": "name",
       "description": "description",
       "pathToImage": "textures/attackUpgrade",
-      "type": 0
+      "type": 0,
+      "effect":  20
     },
     {
       "name": "name2",
       "description": "description2",
       "pathToImage": "textures/speedUpgrade",
-      "type": 1
+      "type": 1,
+      "effect":  -1
     },
     {
       "name": "name3",
       "description": "description3",
       "pathToImage": "textures/attackSpeedUpgrade",
-      "type": 2
+      "type": 2,
+      "effect":  20
     }
   ]
 }

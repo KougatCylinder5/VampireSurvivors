@@ -34,6 +34,9 @@ public class GameManager : MonoBehaviour
     public int pointerDistDrop;
 
     private List<Upgrade> upgrades;
+    public List<GameObject> weapons;
+    public int luck;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -60,23 +63,30 @@ public class GameManager : MonoBehaviour
 
     public void selectReward(GameObject reward)
     {
+        StoreReward store = reward.GetComponent<StoreReward>();
 
-        switch ((Types)(reward.GetComponent<StoreReward>().upgradeInfo.type))
+        switch ((Types)(store.upgradeInfo.type))
         {
-            case Types.AttackDamage:
-
+            case Types.WhipDmg:
+                weapons[0].GetComponent<Whip>().damage += store.upgradeInfo.effect;
                 break;
-            case Types.Speed:
-
+            case Types.WhipAtkSpd:
+                weapons[0].GetComponent<Whip>().attackSpeed += store.upgradeInfo.effect;
                 break;
-            case Types.AttackSpeed:
-                
+            case Types.RunetracerDmg:
+                weapons[1].GetComponent<Runetracer>().damage += store.upgradeInfo.effect;
+                break;
+            case Types.RunetracerSpeed:
+                weapons[1].GetComponent<Runetracer>().speed += store.upgradeInfo.effect;
+                break;
+            case Types.MxHlh:
+                playerController.maxHealth += store.upgradeInfo.effect;
+                break;
+            case Types.HlhBst:
+                playerController.health += store.upgradeInfo.effect;
                 break;
             case Types.Luck:
-
-                break;
-            case Types.MaxHealth:
-
+                luck += store.upgradeInfo.effect;
                 break;
             default:
                 break;
@@ -209,6 +219,7 @@ public class Upgrade
     public string description;
     public string pathToImage;
     public int type;
+    public int effect;
     public override String ToString()
     {
         return name + " " + description + " " + type;
@@ -222,10 +233,11 @@ public class Upgrades
 
 public enum Types
 {
-    AttackDamage,
-    Speed,
-    AttackSpeed,
+    WhipDmg,
+    WhipAtkSpd,
+    RunetracerDmg,
+    RunetracerSpeed,
     Luck,
-    MaxHealth,
-    HealthPlus
+    MxHlh,
+    HlhBst
 }
