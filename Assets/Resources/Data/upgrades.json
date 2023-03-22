@@ -1,18 +1,18 @@
 {
   "upgrades": [
     {
-      "name": "name",
-      "description": "description",
+      "name": "Whip Damage",
+      "description": "\nWhip does more damage to enemies \nDamage +20",
       "pathToImage": "textures/attackUpgrade",
       "type": 0,
       "effect":  20
     },
     {
-      "name": "name2",
-      "description": "description2",
+      "name": "Whip Attack Speed",
+      "description": "\nFaster whipping \nAttack speed +0.5s",
       "pathToImage": "textures/speedUpgrade",
       "type": 1,
-      "effect":  -1
+      "effect":  -0.5
     },
     {
       "name": "name3",

@@ -57,7 +57,7 @@ public class GoToPlayer : MonoBehaviour
     {
         return damage;
     }
-    public void takeDamage(int dmg)
+    public void takeDamage(float dmg)
     {
         health -= dmg;
         GetComponent<MeshRenderer>().material = dmgMaterial;

@@ -5,8 +5,8 @@ using UnityEngine;
 
 public class Whip : MonoBehaviour
 {
-    public double attackSpeed = 1;
-    public int damage = 10;
+    public float attackSpeed = 3;
+    public float damage = 10;
     private MeshRenderer[] meshes;
     public Animator whipOut;
     public bool hidden = true;
@@ -30,17 +30,6 @@ public class Whip : MonoBehaviour
     {
         while (true)
         {
-
-            /* Unmerged change from project 'Assembly-CSharp.Player'
-            Before:
-                        yield return new WaitForSeconds((float)attackSpeed);
-
-                        whipOut.SetTrigger("Attack");
-            After:
-                        yield return new WaitForSeconds((float)attackSpeed);
-
-                        whipOut.SetTrigger("Attack");
-            */
             yield return new WaitForSeconds((float)attackSpeed);
 
             whipOut.SetTrigger("Attack");
