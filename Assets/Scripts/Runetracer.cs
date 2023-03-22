@@ -14,7 +14,7 @@ UnityEngine;
 public class Runetracer : MonoBehaviour
 {
     public float speed;
-    public int damage;
+    public float damage;
 
     private GameObject target;
     private GameObject player;

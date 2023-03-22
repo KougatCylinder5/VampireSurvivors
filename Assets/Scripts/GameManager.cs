@@ -35,7 +35,7 @@ public class GameManager : MonoBehaviour
 
     private List<Upgrade> upgrades;
     public List<GameObject> weapons;
-    public int luck;
+    public float luck;
 
     // Start is called before the first frame update
     void Start()
@@ -91,7 +91,7 @@ public class GameManager : MonoBehaviour
             default:
                 break;
         }
-
+        
         rewardPanel.SetActive(false);
         Time.timeScale = 1;
     }
@@ -139,7 +139,7 @@ public class GameManager : MonoBehaviour
 
     private void spawnEnemies()
     {
-        if (GameObject.FindGameObjectsWithTag("Enemy").Length < 100)
+        if (GameObject.FindGameObjectsWithTag("Enemy").Length < 300)
         {
             List<GameObject> closeInOrder = enemySpawns.OrderBy(t => (t.transform.position - player.transform.position).sqrMagnitude).ToList<GameObject>();
             int startPos = 0;
@@ -219,7 +219,7 @@ public class Upgrade
     public string description;
     public string pathToImage;
     public int type;
-    public int effect;
+    public float effect;
     public override String ToString()
     {
         return name + " " + description + " " + type;
