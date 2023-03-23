@@ -27,7 +27,7 @@ public class GameManager : MonoBehaviour
     private GameObject player;
     private PlayerController playerController;
 
-    private GameObject[] targets;
+    private List<GameObject> targets;
     private List<GameObject> pointers = new List<GameObject>();
     public GameObject pointerImage;
     public int pointerDistInvis;
@@ -45,7 +45,7 @@ public class GameManager : MonoBehaviour
         playerController = player.GetComponent<PlayerController>();
         spawnSpawns();
         enemySpawns = GameObject.FindGameObjectsWithTag("EnemySpawns").ToList();
-        targets = GameObject.FindGameObjectsWithTag("Collectables");
+        targets = GameObject.FindGameObjectsWithTag("Collectables").ToList<GameObject>();
         foreach (GameObject t in targets)
         {
             pointers.Add(Instantiate(pointerImage, GameObject.Find("Canvas").transform.GetChild(0).transform, false));
@@ -97,7 +97,7 @@ public class GameManager : MonoBehaviour
     }
     public void PointToTarget()
     {
-        for (int i = 0; i < targets.Length; i++)
+        for (int i = 0; i < targets.Count; i++)
         {
             Vector3 pos = Camera.main.WorldToScreenPoint(targets[i].transform.position);
             pos.z = 0;
@@ -112,7 +112,7 @@ public class GameManager : MonoBehaviour
             pointers[i].transform.eulerAngles = new Vector3(0, 0, (float)(Math.Atan2(pos.y, pos.x) * 180 / Math.PI));
             Transform pointerChild = pointers[i].transform.GetChild(0); 
             pointerChild.eulerAngles = Vector3.zero;
-            pointerChild.GetComponent<TextMeshProUGUI>().text = Mathf.RoundToInt((targets[i].transform.position-player.transform.position).magnitude).ToString();
+            pointerChild.GetComponent<TextMeshProUGUI>().text = Mathf.RoundToInt((targets.ElementAt<GameObject>(i).transform.position-player.transform.position).magnitude).ToString();
             if (pos.magnitude < pointerDistDrop)
             {
                 pointers[i].GetComponent<Image>().color = new Color(255, 255, 255, 0);
@@ -124,8 +124,14 @@ public class GameManager : MonoBehaviour
                 pointerChild.GetComponent<TextMeshProUGUI>().color = new Color(255, 255, 255, (pos.magnitude - pointerDistDrop) / pointerDistInvis);
             }
         }
-
     }
+    public void RemovePointer(GameObject targetToRemove)
+    {
+        pointers.RemoveAt(targets.IndexOf(targetToRemove));
+        targets.Remove(targetToRemove);
+        
+    }
+
     public void spawnSpawns()
     {
         for (int x = -450; x < 500; x += 50)
@@ -210,6 +216,11 @@ public class GameManager : MonoBehaviour
         }
 
         return list;
+    }
+
+    public void spawnWave(GameObject waveObject)
+    {
+
     }
 }
 [System.Serializable]

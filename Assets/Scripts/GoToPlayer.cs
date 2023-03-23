@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
@@ -18,7 +19,8 @@ public class GoToPlayer : MonoBehaviour
         player = GameObject.Find("Player");
         agent = GetComponent<NavMeshAgent>();
         agent.speed = 1.0f;
-        InvokeRepeating("updatePath", 0, 0.5f);
+        
+        StartCoroutine("updatePath");
         GetComponent<MeshRenderer>().material = normalMaterial;
     }
 
@@ -26,6 +28,9 @@ public class GoToPlayer : MonoBehaviour
     void Update()
     {
         checkHealth();
+         
+       
+        
     }
 
     private void checkHealth()
@@ -33,7 +38,7 @@ public class GoToPlayer : MonoBehaviour
         if (health <= 0)
         {
 
-            float randomDrop = Random.Range(0, 100f);
+            float randomDrop = UnityEngine.Random.Range(0, 100f);
 
             if (randomDrop <= 10)
             {
@@ -43,14 +48,21 @@ public class GoToPlayer : MonoBehaviour
             {
                 Instantiate(drop[1], transform.position, transform.rotation);
             }
-
+            StopAllCoroutines();
             Destroy(gameObject);
+            
+
         }
     }
 
-    private void updatePath()
+    private IEnumerator updatePath()
     {
-        agent.destination = player.transform.position;
+        while (true)
+        {
+            yield return new WaitForSecondsRealtime(0.5f);
+            agent.destination = player.transform.position;
+
+        }
     }
 
     public int getDamage()
