@@ -640,7 +640,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: f1889da8b433f404e991501f0d605395, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 3.89
+      value: 2.766
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: f1889da8b433f404e991501f0d605395, type: 3}
       propertyPath: m_LocalPosition.z
@@ -846,6 +846,7 @@ MonoBehaviour:
     pathToImage: 
     type: 0
     effect: 0
+    weapon: 0
 --- !u!1 &619999868
 GameObject:
   m_ObjectHideFlags: 0
@@ -953,7 +954,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1795863741}
-  m_RootOrder: 2
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -1151,7 +1152,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1795863741}
-  m_RootOrder: 0
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -1287,7 +1288,7 @@ RectTransform:
   - {fileID: 1723431309}
   - {fileID: 2031357057}
   m_Father: {fileID: 1795863741}
-  m_RootOrder: 5
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
@@ -1370,7 +1371,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1224161079}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -8, y: 18.72, z: -29.8}
+  m_LocalPosition: {x: -7.2, y: 18.72, z: -131}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1684,6 +1685,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   warningText: {fileID: 1808036838}
   pickupText: {fileID: 1014297642}
+  type: 0
+  effect: 0
 --- !u!64 &1597115457
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -1709,8 +1712,8 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.019999996
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Radius: 0.03
+  m_Center: {x: 0, y: 0, z: -0.01}
 --- !u!1 &1625201272
 GameObject:
   m_ObjectHideFlags: 0
@@ -1834,8 +1837,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1709269006}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 2.057, z: 0}
+  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: 4.792, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1851,13 +1854,13 @@ Light:
   m_GameObject: {fileID: 1709269006}
   m_Enabled: 1
   serializedVersion: 10
-  m_Type: 2
+  m_Type: 0
   m_Shape: 0
   m_Color: {r: 1, g: 0.71393543, b: 0.3820755, a: 1}
   m_Intensity: 1
   m_Range: 14.240843
-  m_SpotAngle: 30
-  m_InnerSpotAngle: 21.80208
+  m_SpotAngle: 19.403973
+  m_InnerSpotAngle: 19.403973
   m_CookieSize: 10
   m_Shadows:
     m_Type: 2
@@ -2011,7 +2014,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1795863741}
-  m_RootOrder: 4
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
@@ -2289,12 +2292,12 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1014297643}
-  - {fileID: 1808036839}
   - {fileID: 868861634}
   - {fileID: 1936671332}
   - {fileID: 1728036078}
   - {fileID: 1095911307}
+  - {fileID: 1014297643}
+  - {fileID: 1808036839}
   - {fileID: 382145777}
   m_Father: {fileID: 0}
   m_RootOrder: 4
@@ -2343,7 +2346,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1795863741}
-  m_RootOrder: 1
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
@@ -2600,6 +2603,7 @@ MonoBehaviour:
     pathToImage: 
     type: 0
     effect: 0
+    weapon: 0
 --- !u!1 &1917561618
 GameObject:
   m_ObjectHideFlags: 0
@@ -2669,7 +2673,7 @@ RectTransform:
   - {fileID: 382697788}
   - {fileID: 1917561619}
   m_Father: {fileID: 1795863741}
-  m_RootOrder: 3
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
@@ -2880,6 +2884,7 @@ MonoBehaviour:
     pathToImage: 
     type: 0
     effect: 0
+    weapon: 0
 --- !u!1 &2031357056
 GameObject:
   m_ObjectHideFlags: 0

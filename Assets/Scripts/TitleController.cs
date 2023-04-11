@@ -38,26 +38,37 @@ public class TitleController : MonoBehaviour
         exitButton.SetActive(false);
         startButton.SetActive(false);
 
-        backButton.SetActive(true);
-        enterButton.SetActive(true);
         
+        StartCoroutine(delayedShowStart());
     }
 
     public void zoomAway()
     {
         controller.SetTrigger("ZoomOut");
 
-        exitButton.SetActive(true);
-        startButton.SetActive(true);
-
+        
         enterButton.SetActive(false);
         backButton.SetActive(false);
+        StartCoroutine(delayedShowTitle());
     }
 
     public void exit()
     {
         Application.Quit();
     }
+    
+    public IEnumerator delayedShowStart()
+    {
+        yield return new WaitForSeconds(1);
+        backButton.SetActive(true);
+        enterButton.SetActive(true);
+    }
 
+    public IEnumerator delayedShowTitle()
+    {
+        yield return new WaitForSeconds(1);
+        exitButton.SetActive(true);
+        startButton.SetActive(true);
 
+    }
 }

@@ -1,3 +1,4 @@
+using Palmmedia.ReportGenerator.Core.Parser.Analysis;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -8,6 +9,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using UnityEngine.Windows;
 using static UnityEngine.GraphicsBuffer;
 
 public class GameManager : MonoBehaviour
@@ -65,19 +67,31 @@ public class GameManager : MonoBehaviour
     {
         StoreReward store = reward.GetComponent<StoreReward>();
 
+        dynamic comp;
+
+        switch ((Weapons)(store.upgradeInfo.weapon))
+        {
+            case Weapons.Whip:
+                comp = weapons[(int)Weapons.Whip].GetComponent<Whip>();
+                break;
+            case Weapons.Runetracer:
+                comp = weapons[(int)Weapons.Runetracer].GetComponent<Runetracer>();
+                break;
+            default:
+                throw new Exception();
+        }
         switch ((Types)(store.upgradeInfo.type))
         {
-            case Types.WhipDmg:
-                weapons[0].GetComponent<Whip>().damage += store.upgradeInfo.effect;
+            case Types.Dmg:
+                comp.damage += store.upgradeInfo.effect;
+                weapons[store.upgradeInfo.weapon] = comp.gameObject;
                 break;
-            case Types.WhipAtkSpd:
-                weapons[0].GetComponent<Whip>().attackSpeed += store.upgradeInfo.effect;
+            case Types.Speed:
+                comp.speed += store.upgradeInfo.effect;
+                weapons[store.upgradeInfo.weapon] = comp.gameObject;
                 break;
-            case Types.RunetracerDmg:
-                weapons[1].GetComponent<Runetracer>().damage += store.upgradeInfo.effect;
-                break;
-            case Types.RunetracerSpeed:
-                weapons[1].GetComponent<Runetracer>().speed += store.upgradeInfo.effect;
+            case Types.Unlock:
+                weapons[store.upgradeInfo.weapon].SetActive(true);
                 break;
             case Types.MxHlh:
                 playerController.maxHealth += store.upgradeInfo.effect;
@@ -88,10 +102,11 @@ public class GameManager : MonoBehaviour
             case Types.Luck:
                 luck += store.upgradeInfo.effect;
                 break;
+
             default:
                 break;
         }
-        
+
         rewardPanel.SetActive(false);
         Time.timeScale = 1;
     }
@@ -110,9 +125,9 @@ public class GameManager : MonoBehaviour
             pos.x -= cameraXMax / 2;
 
             pointers[i].transform.eulerAngles = new Vector3(0, 0, (float)(Math.Atan2(pos.y, pos.x) * 180 / Math.PI));
-            Transform pointerChild = pointers[i].transform.GetChild(0); 
+            Transform pointerChild = pointers[i].transform.GetChild(0);
             pointerChild.eulerAngles = Vector3.zero;
-            pointerChild.GetComponent<TextMeshProUGUI>().text = Mathf.RoundToInt((targets.ElementAt<GameObject>(i).transform.position-player.transform.position).magnitude).ToString();
+            pointerChild.GetComponent<TextMeshProUGUI>().text = Mathf.RoundToInt((targets.ElementAt<GameObject>(i).transform.position - player.transform.position).magnitude).ToString();
             if (pos.magnitude < pointerDistDrop)
             {
                 pointers[i].GetComponent<Image>().color = new Color(255, 255, 255, 0);
@@ -129,7 +144,7 @@ public class GameManager : MonoBehaviour
     {
         pointers.RemoveAt(targets.IndexOf(targetToRemove));
         targets.Remove(targetToRemove);
-        
+
     }
 
     public void spawnSpawns()
@@ -186,7 +201,7 @@ public class GameManager : MonoBehaviour
 
         HashSet<int> numbersPicked = new HashSet<int>();
 
-        for(int i = 0; i < 3; i++)
+        for (int i = 0; i < 3; i++)
         {
 
             GameObject buttonObject = rewardPanel.transform.GetChild(i).gameObject;
@@ -222,7 +237,15 @@ public class GameManager : MonoBehaviour
     {
 
     }
+
+
+
+    public T CastObject<T>(object input)
+    {
+        return (T)input;
+    }
 }
+
 [System.Serializable]
 public class Upgrade
 {
@@ -231,6 +254,8 @@ public class Upgrade
     public string pathToImage;
     public int type;
     public float effect;
+    public int weapon;
+    public int chance;
     public override String ToString()
     {
         return name + " " + description + " " + type;
@@ -241,14 +266,19 @@ public class Upgrades
 {
     public List<Upgrade> upgrades;
 }
-
+public enum Weapons
+{
+    Whip,
+    Runetracer
+}
 public enum Types
 {
-    WhipDmg,
-    WhipAtkSpd,
-    RunetracerDmg,
-    RunetracerSpeed,
+    Dmg,
+    Speed,
+    Unlock,
     Luck,
     MxHlh,
     HlhBst
 }
+
+
