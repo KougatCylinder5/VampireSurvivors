@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Whip : MonoBehaviour
 {
-    public float attackSpeed = 3;
+    public float speed = 3;
     public float damage = 10;
     private MeshRenderer[] meshes;
     public Animator whipOut;
@@ -30,7 +30,7 @@ public class Whip : MonoBehaviour
     {
         while (true)
         {
-            yield return new WaitForSeconds((float)attackSpeed);
+            yield return new WaitForSeconds(speed);
 
             whipOut.SetTrigger("Attack");
             foreach (MeshRenderer mesh in meshes)

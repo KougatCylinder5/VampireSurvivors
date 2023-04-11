@@ -5,21 +5,44 @@
       "description": "\nWhip does more damage to enemies \nDamage +20",
       "pathToImage": "textures/attackUpgrade",
       "type": 0,
-      "effect":  20
+      "effect": 20,
+      "weapon": 0,
+      "chance": 10
     },
     {
       "name": "Whip Attack Speed",
       "description": "\nFaster whipping \nAttack speed +0.5s",
       "pathToImage": "textures/speedUpgrade",
       "type": 1,
-      "effect":  -0.5
+      "effect": -0.5,
+      "weapon": 0,
+      "chance": 10
     },
     {
-      "name": "name3",
-      "description": "description3",
+      "name": "Unlock Runetracer",
+      "description": "",
+      "pathToImage": "textures/",
+      "type": 3,
+      "weapon": 1,
+      "chance": 5
+    },
+    {
+      "name": "Runetracer Damage",
+      "description": "\nRuneTracer does more damage to enemies \nDamage +20",
       "pathToImage": "textures/attackSpeedUpgrade",
-      "type": 2,
-      "effect":  20
+      "type": 0,
+      "effect": 20,
+      "weapon": 1,
+      "chance": 5
+    },
+    {
+      "name": "Runetracer Speed",
+      "description": "\nRunetracer Orbits Faster \nOrbit speed +1.0s",
+      "pathToImage": "textures/attackSpeedUpgrade",
+      "type": 1,
+      "effect": 1,
+      "weapon": 1,
+      "chance": 5
     }
   ]
 }
