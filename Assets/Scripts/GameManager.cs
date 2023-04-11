@@ -35,9 +35,12 @@ public class GameManager : MonoBehaviour
     public int pointerDistInvis;
     public int pointerDistDrop;
 
+
     private List<Upgrade> upgrades;
     public List<GameObject> weapons;
+    public List<int> chance = new List<int>() {0};
     public float luck;
+
 
     // Start is called before the first frame update
     void Start()
@@ -193,7 +196,6 @@ public class GameManager : MonoBehaviour
             displayUpgrades();
         }
     }
-
     private void displayUpgrades()
     {
         Time.timeScale = 0f;
@@ -203,17 +205,18 @@ public class GameManager : MonoBehaviour
 
         for (int i = 0; i < 3; i++)
         {
-
             GameObject buttonObject = rewardPanel.transform.GetChild(i).gameObject;
             Image image = buttonObject.GetComponent<Image>();
-            int choice;
+            int j = 0;
             do
             {
-                choice = UnityEngine.Random.Range(0, upgrades.Count);
-            } while (!numbersPicked.Add(choice));
-            Sprite graphic = Resources.Load<Sprite>(upgrades[choice].pathToImage);
+                int chanceChosen = UnityEngine.Random.Range(0, chance.Last());
+                
+                for(; chance[j] < chanceChosen; j++){}
+            } while (!numbersPicked.Add(j));
+            Sprite graphic = Resources.Load<Sprite>(upgrades[j].pathToImage);
             image.sprite = graphic;
-            buttonObject.GetComponent<StoreReward>().setRewardInfo(upgrades[choice]);
+            buttonObject.GetComponent<StoreReward>().setRewardInfo(upgrades[j]);
         }
     }
 
@@ -228,6 +231,7 @@ public class GameManager : MonoBehaviour
         foreach (Upgrade upgrade in listOfUpgrades.upgrades)
         {
             list.Add(upgrade);
+            chance.Add(upgrade.chance + chance.Last<int>());
         }
 
         return list;
@@ -236,13 +240,6 @@ public class GameManager : MonoBehaviour
     public void spawnWave(GameObject waveObject)
     {
 
-    }
-
-
-
-    public T CastObject<T>(object input)
-    {
-        return (T)input;
     }
 }
 
