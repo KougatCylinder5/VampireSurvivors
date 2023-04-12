@@ -59,8 +59,14 @@ public class GoToPlayer : MonoBehaviour
     {
         while (true)
         {
-            yield return new WaitForSecondsRealtime(0.5f);
+            yield return new WaitForSeconds(0.5f);
+            if (Vector3.Distance(player.transform.position, transform.position) > 50)
+            {
+                Destroy(gameObject);
+                break;
+            }
             agent.destination = player.transform.position;
+            
 
         }
     }

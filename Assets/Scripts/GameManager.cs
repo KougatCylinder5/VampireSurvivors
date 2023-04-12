@@ -230,11 +230,14 @@ public class GameManager : MonoBehaviour
             {
                 j = 0;
                 int chanceChosen = UnityEngine.Random.Range(0, chance.Last());
-                for (; chance[j] < chanceChosen; j++) { }
+                for (; chance[j] < chanceChosen; j++) { Debug.Log(j); }
             } while (!numbersPicked.Add(j));
+            Debug.Log(upgrades.Count);
             Sprite graphic = Resources.Load<Sprite>(upgrades[j].pathToImage);
+            
             image.sprite = graphic;
-            buttonObject.GetComponent<StoreReward>().setRewardInfo(upgrades[j]);        }
+            buttonObject.GetComponent<StoreReward>().setRewardInfo(upgrades[j]);
+        }
     }
 
     private List<Upgrade> readUpgrades()
@@ -244,7 +247,8 @@ public class GameManager : MonoBehaviour
         Upgrades listOfUpgrades = JsonUtility.FromJson<Upgrades>(json.text);
 
         List<Upgrade> list = new List<Upgrade>();
-        chance[0] = listOfUpgrades.upgrades[0].chance;
+        list.Add(listOfUpgrades.upgrades[0]);
+        listOfUpgrades.upgrades.RemoveAt(0);
         foreach (Upgrade upgrade in listOfUpgrades.upgrades)
         {
             list.Add(upgrade);

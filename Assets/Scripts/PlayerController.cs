@@ -36,9 +36,10 @@ public class PlayerController : MonoBehaviour
         float verticalInput = Input.GetAxis("Vertical");
         Vector3 movement = new Vector3(horizontalInput * Time.deltaTime * speed, -9.81f * Time.deltaTime, verticalInput * Time.deltaTime * speed);
 
+        
         if (new Vector2(horizontalInput, verticalInput) != Vector2.zero)
         {
-            transform.rotation = Quaternion.LookRotation(new(movement.x, 0, movement.z), transform.up);
+            transform.rotation = Quaternion.Slerp(transform.rotation,Quaternion.LookRotation(new(movement.x, 0, movement.z)),0.25f);
         }
 
         controller.Move(movement);
