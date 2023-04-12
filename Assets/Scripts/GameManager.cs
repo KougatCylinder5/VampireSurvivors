@@ -1,16 +1,9 @@
-using Palmmedia.ReportGenerator.Core.Parser.Analysis;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.UI;
-using UnityEngine.Windows;
-using static UnityEngine.GraphicsBuffer;
 
 public class GameManager : MonoBehaviour
 {
@@ -72,16 +65,23 @@ public class GameManager : MonoBehaviour
 
         dynamic comp;
 
-        switch ((Weapons)(store.upgradeInfo.weapon))
+        if (store.upgradeInfo.weapon != -1)
         {
-            case Weapons.Whip:
-                comp = weapons[(int)Weapons.Whip].GetComponent<Whip>();
-                break;
-            case Weapons.Runetracer:
-                comp = weapons[(int)Weapons.Runetracer].GetComponent<Runetracer>();
-                break;
-            default:
-                throw new Exception();
+            switch ((Weapons)(store.upgradeInfo.weapon))
+            {
+                case Weapons.Whip:
+                    comp = weapons[(int)Weapons.Whip].GetComponent<Whip>();
+                    break;
+                case Weapons.Runetracer:
+                    comp = weapons[(int)Weapons.Runetracer].GetComponent<Runetracer>();
+                    break;
+                default:
+                    throw new Exception();
+            }
+        }
+        else
+        {
+            comp = new Component();
         }
         switch ((Types)(store.upgradeInfo.type))
         {
@@ -95,9 +95,25 @@ public class GameManager : MonoBehaviour
                 break;
             case Types.Unlock:
                 weapons[store.upgradeInfo.weapon].SetActive(true);
+                int pos = upgrades.IndexOf(store.upgradeInfo);
+                chance.RemoveAt(pos);
+                for(int i = 0; i < chance.Count; i++)
+                {
+                    pos--;
+                    if (pos >= 0)
+                    {
+                        continue;
+                    }
+                    else
+                    {
+                        chance[i] -= store.upgradeInfo.chance;
+                    }
+                };
+                upgrades.Remove(store.upgradeInfo);
                 break;
             case Types.MxHlh:
                 playerController.maxHealth += store.upgradeInfo.effect;
+                playerController.health += store.upgradeInfo.effect;
                 break;
             case Types.HlhBst:
                 playerController.health += store.upgradeInfo.effect;
@@ -113,6 +129,7 @@ public class GameManager : MonoBehaviour
         rewardPanel.SetActive(false);
         Time.timeScale = 1;
     }
+    
     public void PointToTarget()
     {
         for (int i = 0; i < targets.Count; i++)
@@ -205,19 +222,19 @@ public class GameManager : MonoBehaviour
 
         for (int i = 0; i < 3; i++)
         {
+            
             GameObject buttonObject = rewardPanel.transform.GetChild(i).gameObject;
             Image image = buttonObject.GetComponent<Image>();
-            int j = 0;
+            int j;
             do
             {
+                j = 0;
                 int chanceChosen = UnityEngine.Random.Range(0, chance.Last());
-                
-                for(; chance[j] < chanceChosen; j++){}
+                for (; chance[j] < chanceChosen; j++) { }
             } while (!numbersPicked.Add(j));
             Sprite graphic = Resources.Load<Sprite>(upgrades[j].pathToImage);
             image.sprite = graphic;
-            buttonObject.GetComponent<StoreReward>().setRewardInfo(upgrades[j]);
-        }
+            buttonObject.GetComponent<StoreReward>().setRewardInfo(upgrades[j]);        }
     }
 
     private List<Upgrade> readUpgrades()
@@ -227,7 +244,7 @@ public class GameManager : MonoBehaviour
         Upgrades listOfUpgrades = JsonUtility.FromJson<Upgrades>(json.text);
 
         List<Upgrade> list = new List<Upgrade>();
-
+        chance[0] = listOfUpgrades.upgrades[0].chance;
         foreach (Upgrade upgrade in listOfUpgrades.upgrades)
         {
             list.Add(upgrade);

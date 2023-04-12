@@ -7,16 +7,16 @@
       "type": 0,
       "effect": 20,
       "weapon": 0,
-      "chance": 10
+      "chance": 20
     },
     {
       "name": "Whip Attack Speed",
       "description": "\nFaster whipping \nAttack speed +0.5s",
-      "pathToImage": "textures/speedUpgrade",
+      "pathToImage": "textures/attackSpeedUpgrade",
       "type": 1,
       "effect": -0.5,
       "weapon": 0,
-      "chance": 10
+      "chance": 20
     },
     {
       "name": "Unlock Runetracer",
@@ -24,16 +24,16 @@
       "pathToImage": "textures/",
       "type": 2,
       "weapon": 1,
-      "chance": 5
+      "chance": 10
     },
     {
       "name": "Runetracer Damage",
       "description": "\nRuneTracer does more damage to enemies \nDamage +20",
-      "pathToImage": "textures/attackSpeedUpgrade",
+      "pathToImage": "textures/attackUpgrade",
       "type": 0,
       "effect": 20,
       "weapon": 1,
-      "chance": 5
+      "chance": 10
     },
     {
       "name": "Runetracer Speed",
@@ -42,7 +42,25 @@
       "type": 1,
       "effect": 1,
       "weapon": 1,
-      "chance": 5
+      "chance": 10
+    },
+    {
+      "name": "Max Health",
+      "description": "\nAdds 50 health to your health pool \nMax Health +50",
+      "pathToImage": "textures/",
+      "type": 4,
+      "effect": 50,
+      "weapon": -1,
+      "chance": 15
+    },
+    {
+      "name": "Health",
+      "description": "\nRestores 25 health to your health pool \nHealth +25",
+      "pathToImage": "textures/",
+      "type": 4,
+      "effect": 25,
+      "weapon": -1,
+      "chance": 20
     }
   ]
 }
