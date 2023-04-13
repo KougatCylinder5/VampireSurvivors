@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
@@ -12,6 +13,8 @@ public class GameManager : MonoBehaviour
     public int levelXP;
     public float levelXPRequired;
     public TextMeshProUGUI levelNumber;
+    public TextMeshProUGUI timer;
+    public int seconds;
     public Slider levelBar;
     public Slider healthBar;
     public GameObject rewardPanel;
@@ -49,6 +52,7 @@ public class GameManager : MonoBehaviour
             pointers.Add(Instantiate(pointerImage, GameObject.Find("Canvas").transform.GetChild(0).transform, false));
         }
         upgrades = readUpgrades();
+        StartCoroutine("updateTime");
     }
 
     // Update is called once per frame
@@ -57,6 +61,16 @@ public class GameManager : MonoBehaviour
         levelBar.value = levelXP / levelXPRequired;
         healthBar.value = (float)(playerController.getHealth() / playerController.getMaxHealth());
         PointToTarget();
+    }
+
+    private IEnumerator updateTime()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(1);
+            seconds++;
+            timer.text = "Timer: " + seconds / 60 + ":" + (seconds % 60).ToString("00");
+        }
     }
 
     public void selectReward(GameObject reward)
@@ -230,9 +244,8 @@ public class GameManager : MonoBehaviour
             {
                 j = 0;
                 int chanceChosen = UnityEngine.Random.Range(0, chance.Last());
-                for (; chance[j] < chanceChosen; j++) { Debug.Log(j); }
+                for (; chance[j] < chanceChosen; j++) { }
             } while (!numbersPicked.Add(j));
-            Debug.Log(upgrades.Count);
             Sprite graphic = Resources.Load<Sprite>(upgrades[j].pathToImage);
             
             image.sprite = graphic;
@@ -260,7 +273,12 @@ public class GameManager : MonoBehaviour
 
     public void spawnWave(GameObject waveObject)
     {
+        Vector3 pos = waveObject.transform.position;
 
+        for(int i = 0; i < 360; i+= 10)
+        {
+
+        }
     }
 }
 

@@ -13,10 +13,13 @@ public class Pickup : MonoBehaviour
     {
         if (warned && Input.GetKeyDown(KeyCode.E))
         {
-            GameObject.Find("GameManager").GetComponent<GameManager>().spawnWave(gameObject);
+            GameManager manager = GameObject.Find("GameManager").GetComponent<GameManager>();
+            manager.spawnWave(gameObject);
+            manager.RemovePointer(gameObject);
             warningText.SetActive(false);
             pickupText.SetActive(false);
             gameObject.SetActive(false);
+
         }
         else if (inRange && Input.GetKeyDown(KeyCode.E))
         {

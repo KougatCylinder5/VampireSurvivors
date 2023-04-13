@@ -36,13 +36,14 @@ public class PlayerController : MonoBehaviour
         float verticalInput = Input.GetAxis("Vertical");
         Vector3 movement = new Vector3(horizontalInput * Time.deltaTime * speed, -9.81f * Time.deltaTime, verticalInput * Time.deltaTime * speed);
 
-        
-        if (new Vector2(horizontalInput, verticalInput) != Vector2.zero)
+        controller.Move(movement);
+        movement.y = 0;
+        if (movement.sqrMagnitude != 0)
         {
-            transform.rotation = Quaternion.Slerp(transform.rotation,Quaternion.LookRotation(new(movement.x, 0, movement.z)),0.25f);
+            transform.rotation = Quaternion.Slerp(transform.rotation,Quaternion.LookRotation(movement),0.25f);
         }
 
-        controller.Move(movement);
+        
     }
 
     private void OnTriggerEnter(Collider collision)
