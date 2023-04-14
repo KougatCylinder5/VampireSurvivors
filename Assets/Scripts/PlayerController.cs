@@ -21,7 +21,7 @@ public class PlayerController : MonoBehaviour
 
         if (health <= 0)
         {
-
+            Time.timeScale = 0;
         }
         else
         {

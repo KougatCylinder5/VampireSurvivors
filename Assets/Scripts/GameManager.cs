@@ -2,8 +2,10 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
@@ -18,6 +20,7 @@ public class GameManager : MonoBehaviour
     public Slider levelBar;
     public Slider healthBar;
     public GameObject rewardPanel;
+    public GameObject pause;
 
     private List<GameObject> enemySpawns;
     public GameObject enemySpawnPrefab;
@@ -53,6 +56,7 @@ public class GameManager : MonoBehaviour
         }
         upgrades = readUpgrades();
         StartCoroutine("updateTime");
+        pause = rewardPanel.transform.parent.GetChild(8).gameObject;
     }
 
     // Update is called once per frame
@@ -61,6 +65,7 @@ public class GameManager : MonoBehaviour
         levelBar.value = levelXP / levelXPRequired;
         healthBar.value = (float)(playerController.getHealth() / playerController.getMaxHealth());
         PointToTarget();
+        pauseMenu(pause);
     }
 
     private IEnumerator updateTime()
@@ -97,6 +102,7 @@ public class GameManager : MonoBehaviour
         {
             comp = new Component();
         }
+        int pos;
         switch ((Types)(store.upgradeInfo.type))
         {
             case Types.Dmg:
@@ -106,10 +112,28 @@ public class GameManager : MonoBehaviour
             case Types.Speed:
                 comp.speed += store.upgradeInfo.effect;
                 weapons[store.upgradeInfo.weapon] = comp.gameObject;
+                pos = upgrades.IndexOf(store.upgradeInfo);
+                if (upgrades[pos].limit != -1 && --upgrades[pos].limit < 0)
+                {
+                    chance.RemoveAt(pos);
+                    for (int i = 0; i < chance.Count; i++)
+                    {
+                        pos--;
+                        if (pos >= 0)
+                        {
+                            continue;
+                        }
+                        else
+                        {
+                            chance[i] -= store.upgradeInfo.chance;
+                        }
+                    };
+                    upgrades.Remove(store.upgradeInfo);
+                }
                 break;
             case Types.Unlock:
                 weapons[store.upgradeInfo.weapon].SetActive(true);
-                int pos = upgrades.IndexOf(store.upgradeInfo);
+                pos = upgrades.IndexOf(store.upgradeInfo);
                 chance.RemoveAt(pos);
                 for(int i = 0; i < chance.Count; i++)
                 {
@@ -227,6 +251,22 @@ public class GameManager : MonoBehaviour
             displayUpgrades();
         }
     }
+
+    public void pauseMenu(GameObject button)
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            pause.SetActive(!pause.activeSelf);
+        }
+        if (button.name.Equals("Resume"))
+        {
+            pause.SetActive(false);
+        }
+        if (button.name.Equals("Exit"))
+        {
+            SceneManager.LoadScene("Title Screen");
+        }
+    }
     private void displayUpgrades()
     {
         Time.timeScale = 0f;
@@ -261,7 +301,6 @@ public class GameManager : MonoBehaviour
 
         List<Upgrade> list = new List<Upgrade>();
         list.Add(listOfUpgrades.upgrades[0]);
-        listOfUpgrades.upgrades.RemoveAt(0);
         foreach (Upgrade upgrade in listOfUpgrades.upgrades)
         {
             list.Add(upgrade);
@@ -292,6 +331,7 @@ public class Upgrade
     public float effect;
     public int weapon;
     public int chance;
+    public int limit;
     public override String ToString()
     {
         return name + " " + description + " " + type;
