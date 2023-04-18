@@ -35,7 +35,7 @@ public class GameManager : MonoBehaviour
     public int pointerDistDrop;
 
 
-    private List<Upgrade> upgrades;
+    private List<Upgrade> upgrades = new List<Upgrade>(){};
     public List<GameObject> weapons;
     public List<int> chance = new List<int>() {0};
     public float luck;
@@ -89,10 +89,13 @@ public class GameManager : MonoBehaviour
             switch ((Weapons)(store.upgradeInfo.weapon))
             {
                 case Weapons.Whip:
-                    comp = weapons[(int)Weapons.Whip].GetComponent<Whip>();
+                    comp = weapons[store.upgradeInfo.weapon].GetComponent<Whip>();
                     break;
                 case Weapons.Runetracer:
-                    comp = weapons[(int)Weapons.Runetracer].GetComponent<Runetracer>();
+                    comp = weapons[store.upgradeInfo.weapon].GetComponent<Runetracer>();
+                    break;
+                case Weapons.Wand:
+                    comp = weapons[store.upgradeInfo.weapon].GetComponent<Wand>();
                     break;
                 default:
                     throw new Exception();
@@ -102,7 +105,6 @@ public class GameManager : MonoBehaviour
         {
             comp = new Component();
         }
-        int pos;
         switch ((Types)(store.upgradeInfo.type))
         {
             case Types.Dmg:
@@ -112,41 +114,10 @@ public class GameManager : MonoBehaviour
             case Types.Speed:
                 comp.speed += store.upgradeInfo.effect;
                 weapons[store.upgradeInfo.weapon] = comp.gameObject;
-                pos = upgrades.IndexOf(store.upgradeInfo);
-                if (upgrades[pos].limit != -1 && --upgrades[pos].limit < 0)
-                {
-                    chance.RemoveAt(pos);
-                    for (int i = 0; i < chance.Count; i++)
-                    {
-                        pos--;
-                        if (pos >= 0)
-                        {
-                            continue;
-                        }
-                        else
-                        {
-                            chance[i] -= store.upgradeInfo.chance;
-                        }
-                    };
-                    upgrades.Remove(store.upgradeInfo);
-                }
+                limitUpgades(store);
                 break;
             case Types.Unlock:
                 weapons[store.upgradeInfo.weapon].SetActive(true);
-                pos = upgrades.IndexOf(store.upgradeInfo);
-                chance.RemoveAt(pos);
-                for(int i = 0; i < chance.Count; i++)
-                {
-                    pos--;
-                    if (pos >= 0)
-                    {
-                        continue;
-                    }
-                    else
-                    {
-                        chance[i] -= store.upgradeInfo.chance;
-                    }
-                };
                 upgrades.Remove(store.upgradeInfo);
                 break;
             case Types.MxHlh:
@@ -167,7 +138,24 @@ public class GameManager : MonoBehaviour
         rewardPanel.SetActive(false);
         Time.timeScale = 1;
     }
-    
+    public void limitUpgades(StoreReward store)
+    {
+        int pos = upgrades.IndexOf(store.upgradeInfo);
+        chance.RemoveAt(pos);
+        for (int i = 0; i < chance.Count; i++)
+        {
+            pos--;
+            if (pos >= 0)
+            {
+                continue;
+            }
+            else
+            {
+                chance[i] -= store.upgradeInfo.chance;
+            }
+        };
+
+    }
     public void PointToTarget()
     {
         for (int i = 0; i < targets.Count; i++)
@@ -286,6 +274,7 @@ public class GameManager : MonoBehaviour
                 int chanceChosen = UnityEngine.Random.Range(0, chance.Last());
                 for (; chance[j] < chanceChosen; j++) { }
             } while (!numbersPicked.Add(j));
+            Debug.Log(j);
             Sprite graphic = Resources.Load<Sprite>(upgrades[j].pathToImage);
             
             image.sprite = graphic;
@@ -345,7 +334,8 @@ public class Upgrades
 public enum Weapons
 {
     Whip,
-    Runetracer
+    Runetracer,
+    Wand
 }
 public enum Types
 {
