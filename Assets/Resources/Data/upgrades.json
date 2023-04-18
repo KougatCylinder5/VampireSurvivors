@@ -50,6 +50,35 @@
       "limit": 3
     },
     {
+      "name": "Unlock Wand",
+      "description": "",
+      "pathToImage": "textures/",
+      "type": 2,
+      "weapon": 2,
+      "chance": 25,
+      "limit": 1
+    },
+    {
+      "name": "Wand Damage",
+      "description": "\nWand does more damage to enemies \nDamage +20",
+      "pathToImage": "textures/attackUpgrade",
+      "type": 0,
+      "effect": 20,
+      "weapon": 2,
+      "chance": 20,
+      "limit": -1
+    },
+    {
+      "name": "Wand Speed",
+      "description": "\nWand Orbits Faster \nOrbit speed +1.0s",
+      "pathToImage": "textures/attackSpeedUpgrade",
+      "type": 1,
+      "effect": 1,
+      "weapon": 2,
+      "chance": 20,
+      "limit": 3
+    },
+    {
       "name": "Max Health",
       "description": "\nAdds 50 health to your health pool \nMax Health +50",
       "pathToImage": "textures/",
