@@ -34,7 +34,7 @@ public class Wand : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         sc = GetComponent<SphereCollider>();
         sc.isTrigger = true;
-        sc.radius = 5;
+        sc.radius = 15;
         player = transform.parent.gameObject;
     }
 

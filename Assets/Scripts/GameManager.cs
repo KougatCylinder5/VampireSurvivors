@@ -35,9 +35,8 @@ public class GameManager : MonoBehaviour
     public int pointerDistDrop;
 
 
-    private List<Upgrade> upgrades = new List<Upgrade>(){};
+    private SortedList<int, Upgrade> upgrades = new SortedList<int, Upgrade>();
     public List<GameObject> weapons;
-    public List<int> chance = new List<int>() {0};
     public float luck;
 
 
@@ -114,11 +113,11 @@ public class GameManager : MonoBehaviour
             case Types.Speed:
                 comp.speed += store.upgradeInfo.effect;
                 weapons[store.upgradeInfo.weapon] = comp.gameObject;
-                limitUpgades(store);
+                
                 break;
             case Types.Unlock:
                 weapons[store.upgradeInfo.weapon].SetActive(true);
-                upgrades.Remove(store.upgradeInfo);
+                upgrades.RemoveAt(upgrades.IndexOfValue(store.upgradeInfo));
                 break;
             case Types.MxHlh:
                 playerController.maxHealth += store.upgradeInfo.effect;
@@ -134,27 +133,41 @@ public class GameManager : MonoBehaviour
             default:
                 break;
         }
-
+        if(store.upgradeInfo.limit != -1)
+        {
+            try
+            {
+                upgrades.ElementAt(upgrades.IndexOfValue(store.upgradeInfo)).Value.limit--;
+            }catch(Exception) { }
+        }
+        if(store.upgradeInfo.limit == 0)
+        {
+            limitUpgrade(store);
+        }
         rewardPanel.SetActive(false);
         Time.timeScale = 1;
     }
-    public void limitUpgades(StoreReward store)
+    public void limitUpgrade(StoreReward store)
     {
-        int pos = upgrades.IndexOf(store.upgradeInfo);
-        chance.RemoveAt(pos);
-        for (int i = 0; i < chance.Count; i++)
+        if(store.upgradeInfo.limit == -1)
         {
-            pos--;
-            if (pos >= 0)
+            return;
+        }
+        int pos = upgrades.IndexOfValue(store.upgradeInfo);
+        for(int i = 0; i < upgrades.Count; i++)
+        {
+            if(i < pos)
             {
                 continue;
             }
-            else
+            if (i == pos)
             {
-                chance[i] -= store.upgradeInfo.chance;
+                upgrades.RemoveAt(pos);
             }
-        };
-
+            upgrades.Add(upgrades.ElementAt(i).Key - store.upgradeInfo.chance, upgrades.ElementAt(i).Value);
+            upgrades.RemoveAt(i+1);
+        }
+        
     }
     public void PointToTarget()
     {
@@ -260,40 +273,34 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 0f;
         rewardPanel.SetActive(true);
 
-        HashSet<int> numbersPicked = new HashSet<int>();
+        HashSet<int> chosenKeys = new HashSet<int>();
 
         for (int i = 0; i < 3; i++)
         {
-            
-            GameObject buttonObject = rewardPanel.transform.GetChild(i).gameObject;
-            Image image = buttonObject.GetComponent<Image>();
-            int j;
+            Upgrade value;
+            int chance = 0;
             do
             {
-                j = 0;
-                int chanceChosen = UnityEngine.Random.Range(0, chance.Last());
-                for (; chance[j] < chanceChosen; j++) { }
-            } while (!numbersPicked.Add(j));
-            Debug.Log(j);
-            Sprite graphic = Resources.Load<Sprite>(upgrades[j].pathToImage);
-            
-            image.sprite = graphic;
-            buttonObject.GetComponent<StoreReward>().setRewardInfo(upgrades[j]);
+                chance = UnityEngine.Random.Range(0,upgrades.Keys.Max<int>());
+                for (; !upgrades.TryGetValue(chance, out value); chance++){ if (chance > upgrades.Keys.Max<int>()) { throw new Exception(); } }
+
+            } while (!chosenKeys.Add(chance));
+            GameObject reward = rewardPanel.transform.GetChild(i).gameObject;
+            reward.GetComponent<StoreReward>().setRewardInfo(value);
+            reward.GetComponent<Image>().sprite = Resources.Load<Sprite>(value.pathToImage);
         }
     }
 
-    private List<Upgrade> readUpgrades()
+    private SortedList<int,Upgrade> readUpgrades()
     {
         TextAsset json = Resources.Load("data/upgrades") as TextAsset;
 
         Upgrades listOfUpgrades = JsonUtility.FromJson<Upgrades>(json.text);
 
-        List<Upgrade> list = new List<Upgrade>();
-        list.Add(listOfUpgrades.upgrades[0]);
+        SortedList<int,Upgrade> list = new SortedList<int,Upgrade>();
         foreach (Upgrade upgrade in listOfUpgrades.upgrades)
         {
-            list.Add(upgrade);
-            chance.Add(upgrade.chance + chance.Last<int>());
+            list.Add(upgrade.chance + list.Keys.LastOrDefault(),upgrade);
         }
 
         return list;
