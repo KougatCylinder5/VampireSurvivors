@@ -12,24 +12,29 @@ public class GoToPlayer : MonoBehaviour
     private int damage = 10;
     public Material dmgMaterial;
     public Material normalMaterial;
+    public GameManager manager;
 
     // Start is called before the first frame update
     void Start()
     {
         player = GameObject.Find("Player");
+        manager = GameObject.Find("GameManager").GetComponent<GameManager>();
+
         agent = GetComponent<NavMeshAgent>();
         agent.speed = 1.0f;
-        
+
         StartCoroutine("updatePath");
         GetComponent<MeshRenderer>().material = normalMaterial;
+
+        scaling();
     }
 
     // Update is called once per frame
     void Update()
     {
         checkHealth();
-         
-       
+
+        
         
     }
 
@@ -55,19 +60,25 @@ public class GoToPlayer : MonoBehaviour
         }
     }
 
+    public void scaling()
+    {
+        health = (10 * Mathf.RoundToInt(manager.seconds / 30)) + 50;
+        damage = (5 * Mathf.RoundToInt(manager.seconds / 30)) + 5;
+        Debug.Log(health);
+        Debug.Log(damage);
+    }
+    
     private IEnumerator updatePath()
     {
         while (true)
         {
             yield return new WaitForSeconds(0.5f);
-            if (Vector3.Distance(player.transform.position, transform.position) > 50)
+            if (Vector3.Distance(player.transform.position, transform.position) > 75)
             {
                 Destroy(gameObject);
                 break;
             }
             agent.destination = player.transform.position;
-            
-
         }
     }
 

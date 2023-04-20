@@ -10,7 +10,7 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
-    public GameObject enemies;
+    public List<GameObject> enemies;
     public int level = 1;
     public int levelXP;
     public float levelXPRequired;
@@ -29,13 +29,13 @@ public class GameManager : MonoBehaviour
     private PlayerController playerController;
 
     private List<GameObject> targets;
-    private List<GameObject> pointers = new List<GameObject>();
+    private readonly List<GameObject> pointers = new();
     public GameObject pointerImage;
     public int pointerDistInvis;
     public int pointerDistDrop;
 
 
-    private SortedList<int, Upgrade> upgrades = new SortedList<int, Upgrade>();
+    private SortedList<int, Upgrade> upgrades = new();
     public List<GameObject> weapons;
     public float luck;
 
@@ -43,7 +43,7 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        InvokeRepeating("spawnEnemies", 1, 20f);
+        InvokeRepeating(nameof(spawnEnemies), 1, 20f);
         player = GameObject.Find("Player");
         playerController = player.GetComponent<PlayerController>();
         spawnSpawns();
@@ -54,7 +54,7 @@ public class GameManager : MonoBehaviour
             pointers.Add(Instantiate(pointerImage, GameObject.Find("Canvas").transform.GetChild(0).transform, false));
         }
         upgrades = readUpgrades();
-        StartCoroutine("updateTime");
+        StartCoroutine(nameof(updateTime));
         pause = rewardPanel.transform.parent.GetChild(8).gameObject;
     }
 
@@ -81,28 +81,19 @@ public class GameManager : MonoBehaviour
     {
         StoreReward store = reward.GetComponent<StoreReward>();
 
-        dynamic comp;
+#pragma warning disable UNT0010 // Component instance creation
+        dynamic comp = new Component();
+#pragma warning restore UNT0010 // Component instance creation
 
         if (store.upgradeInfo.weapon != -1)
         {
-            switch ((Weapons)(store.upgradeInfo.weapon))
+            comp = (Weapons)(store.upgradeInfo.weapon) switch
             {
-                case Weapons.Whip:
-                    comp = weapons[store.upgradeInfo.weapon].GetComponent<Whip>();
-                    break;
-                case Weapons.Runetracer:
-                    comp = weapons[store.upgradeInfo.weapon].GetComponent<Runetracer>();
-                    break;
-                case Weapons.Wand:
-                    comp = weapons[store.upgradeInfo.weapon].GetComponent<Wand>();
-                    break;
-                default:
-                    throw new Exception();
-            }
-        }
-        else
-        {
-            comp = new Component();
+                Weapons.Whip => weapons[store.upgradeInfo.weapon].GetComponent<Whip>(),
+                Weapons.Runetracer => weapons[store.upgradeInfo.weapon].GetComponent<Runetracer>(),
+                Weapons.Wand => weapons[store.upgradeInfo.weapon].GetComponent<Wand>(),
+                _ => throw new Exception("Called a weapon that doesn't exist"),
+            };
         }
         switch ((Types)(store.upgradeInfo.type))
         {
@@ -113,7 +104,6 @@ public class GameManager : MonoBehaviour
             case Types.Speed:
                 comp.speed += store.upgradeInfo.effect;
                 weapons[store.upgradeInfo.weapon] = comp.gameObject;
-                
                 break;
             case Types.Unlock:
                 weapons[store.upgradeInfo.weapon].SetActive(true);
@@ -129,16 +119,15 @@ public class GameManager : MonoBehaviour
             case Types.Luck:
                 luck += store.upgradeInfo.effect;
                 break;
-
             default:
-                break;
+                throw new Exception("Called an upgrade that doesn't exist");
         }
         if(store.upgradeInfo.limit != -1)
         {
             try
             {
                 upgrades.ElementAt(upgrades.IndexOfValue(store.upgradeInfo)).Value.limit--;
-            }catch(Exception) { }
+            }catch{ }
         }
         if(store.upgradeInfo.limit == 0)
         {
@@ -203,7 +192,6 @@ public class GameManager : MonoBehaviour
     {
         pointers.RemoveAt(targets.IndexOf(targetToRemove));
         targets.Remove(targetToRemove);
-
     }
 
     public void spawnSpawns()
@@ -231,7 +219,7 @@ public class GameManager : MonoBehaviour
             {
                 for (int j = 0; j < UnityEngine.Random.Range(5, 11); j++)
                 {
-                    Instantiate(enemies, closeInOrder[i].transform.position, closeInOrder[i].transform.rotation);
+                    Instantiate(enemies[0], closeInOrder[i].transform.position, closeInOrder[i].transform.rotation);
                 }
 
             }
@@ -273,12 +261,12 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 0f;
         rewardPanel.SetActive(true);
 
-        HashSet<int> chosenKeys = new HashSet<int>();
+        HashSet<int> chosenKeys = new();
 
         for (int i = 0; i < 3; i++)
         {
             Upgrade value;
-            int chance = 0;
+            int chance;
             do
             {
                 chance = UnityEngine.Random.Range(0,upgrades.Keys.Max<int>());
@@ -297,7 +285,7 @@ public class GameManager : MonoBehaviour
 
         Upgrades listOfUpgrades = JsonUtility.FromJson<Upgrades>(json.text);
 
-        SortedList<int,Upgrade> list = new SortedList<int,Upgrade>();
+        SortedList<int,Upgrade> list = new();
         foreach (Upgrade upgrade in listOfUpgrades.upgrades)
         {
             list.Add(upgrade.chance + list.Keys.LastOrDefault(),upgrade);
@@ -310,9 +298,9 @@ public class GameManager : MonoBehaviour
     {
         Vector3 pos = waveObject.transform.position;
 
-        for(int i = 0; i < 360; i+= 10)
+        for(float i = -Mathf.PI; i < Mathf.PI-0.3f; i+= Mathf.PI/9)
         {
-
+            Instantiate(enemies[1], new Vector3(Mathf.Sin(i),0, Mathf.Cos(i)) * 10 + pos,Quaternion.Euler(0,0,0));
         }
     }
 }

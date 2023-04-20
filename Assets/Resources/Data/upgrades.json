@@ -70,10 +70,10 @@
     },
     {
       "name": "Wand Speed",
-      "description": "\nWand Orbits Faster \nOrbit speed +1.0s",
+      "description": "\nWand Fires Faster \nShooting speed +0.5s",
       "pathToImage": "textures/attackSpeedUpgrade",
       "type": 1,
-      "effect": 1,
+      "effect": -0.5,
       "weapon": 2,
       "chance": 20,
       "limit": 3
