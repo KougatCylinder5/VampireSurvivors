@@ -22,6 +22,8 @@ public class GameManager : MonoBehaviour
     public GameObject rewardPanel;
     public GameObject pause;
 
+    public static float volume = 0.5f;
+
     private List<GameObject> enemySpawns;
     public GameObject enemySpawnPrefab;
 
@@ -246,14 +248,17 @@ public class GameManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             pause.SetActive(!pause.activeSelf);
+            Time.timeScale = Time.timeScale < 0.1f ? 1 : 0;
         }
         if (button.name.Equals("Resume"))
         {
             pause.SetActive(false);
+            Time.timeScale = 1;
         }
         if (button.name.Equals("Exit"))
         {
             SceneManager.LoadScene("Title Screen");
+            Time.timeScale = 1;
         }
     }
     private void displayUpgrades()
@@ -302,6 +307,10 @@ public class GameManager : MonoBehaviour
         {
             Instantiate(enemies[1], new Vector3(Mathf.Sin(i),0, Mathf.Cos(i)) * 10 + pos,Quaternion.Euler(0,0,0));
         }
+    }
+    public void updateVolume(Slider slider)
+    {
+        volume = slider.value;
     }
 }
 

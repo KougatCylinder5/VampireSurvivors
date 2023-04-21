@@ -10,20 +10,24 @@ public class Whip : MonoBehaviour
     private MeshRenderer[] meshes;
     public Animator whipOut;
     public bool hidden = true;
-
+    public AudioSource whipCrack;
+    public AudioClip whipCrackAudio;
     private HashSet<GameObject> enemies = new HashSet<GameObject>();
     // Start is called before the first frame update
     void Start()
     {
         meshes = gameObject.GetComponentsInChildren<MeshRenderer>();
         StartCoroutine("attack");
-        //collider = GetComponent<BoxCollider>();
+        whipCrackAudio = Resources.Load<AudioClip>("audio/whipcrack");
+
+        whipCrack.clip = whipCrackAudio;
+
     }
 
     // Update is called once per frame
     void Update()
     {
-
+        whipCrack.volume = GameManager.volume;
     }
 
     public IEnumerator attack()
@@ -50,6 +54,8 @@ public class Whip : MonoBehaviour
                     obj.GetComponent<GoToPlayer>().takeDamage(damage);
                 }
             }
+            whipCrack.Play();
+
         }
         catch (InvalidOperationException e)
         {

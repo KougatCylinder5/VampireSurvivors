@@ -75,6 +75,7 @@ public class GoToPlayer : MonoBehaviour
             yield return new WaitForSeconds(0.5f);
             if (Vector3.Distance(player.transform.position, transform.position) > 75)
             {
+                
                 Destroy(gameObject);
                 break;
             }
