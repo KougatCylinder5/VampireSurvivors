@@ -8,18 +8,25 @@ public class Pickup : MonoBehaviour
     bool inRange = false, warned = false;
     public GameObject warningText, pickupText;
     public int type, effect;
+    GameManager manager;
     // Update is called once per frame
     void Update()
     {
         if (warned && Input.GetKeyDown(KeyCode.E))
         {
-            GameManager manager = GameObject.Find("GameManager").GetComponent<GameManager>();
+            manager = GameObject.Find("GameManager").GetComponent<GameManager>();
             manager.spawnWave(gameObject);
             manager.RemovePointer(gameObject);
             warningText.SetActive(false);
             pickupText.SetActive(false);
-            gameObject.SetActive(false);
-
+            if (!GameObject.FindWithTag("Collectables"))
+            {
+                StartCoroutine(nameof(waitForEnd));
+            }
+            else
+            {
+                Destroy(gameObject);
+            }
         }
         else if (inRange && Input.GetKeyDown(KeyCode.E))
         {
@@ -48,5 +55,11 @@ public class Pickup : MonoBehaviour
             pickupText.SetActive(false);
             warningText.SetActive(false);
         }
+    }
+
+    public IEnumerator waitForEnd()
+    {
+        yield return new WaitForSeconds(30);
+        manager.end = true;
     }
 }

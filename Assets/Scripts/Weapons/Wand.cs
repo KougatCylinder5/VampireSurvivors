@@ -27,6 +27,9 @@ public class Wand : MonoBehaviour
     private LayerMask enemyLayer;
     [SerializeField]
     private List<Projectile> projectiles = new List<Projectile>();
+
+    public AudioClip shotFiredAudio;
+    public AudioSource audioSource;
     // Start is called before the first frame update
     private void Start()
     {
@@ -61,6 +64,7 @@ public class Wand : MonoBehaviour
         sc.isTrigger = true;
         sc.radius = 5;
         player = transform.parent.gameObject;
+        audioSource.clip = shotFiredAudio;
     }
 
     public IEnumerator fireWand()
@@ -111,7 +115,10 @@ public class Wand : MonoBehaviour
                 projectile.actualProjectile.SetActive(true);
                 projectile.target = enemy;
                 projectile.actualProjectile.transform.position = player.transform.position;
+                audioSource.Play();
+                
                 return;
+
             }
         }
         projectiles.Add(new Projectile(Instantiate(projectilePrefab, player.transform.position, player.transform.rotation), enemy, damage, projectileSpeed));
