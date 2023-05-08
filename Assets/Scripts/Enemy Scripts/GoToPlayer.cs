@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
@@ -33,9 +32,6 @@ public class GoToPlayer : MonoBehaviour
     void Update()
     {
         checkHealth();
-
-        
-        
     }
 
     private void checkHealth()
@@ -55,7 +51,7 @@ public class GoToPlayer : MonoBehaviour
             }
             StopAllCoroutines();
             Destroy(gameObject);
-            
+
 
         }
     }
@@ -64,18 +60,24 @@ public class GoToPlayer : MonoBehaviour
     {
         health = (10 * Mathf.RoundToInt(manager.seconds / 30)) + 50;
         damage = (5 * Mathf.RoundToInt(manager.seconds / 30)) + 5;
-        Debug.Log(health);
-        Debug.Log(damage);
     }
-    
+
     private IEnumerator updatePath()
     {
         while (true)
         {
             yield return new WaitForSeconds(0.5f);
-            if (Vector3.Distance(player.transform.position, transform.position) > 75)
+            if (Vector3.Distance(player.transform.position, transform.position) < 30)
             {
-                
+                agent.obstacleAvoidanceType = ObstacleAvoidanceType.LowQualityObstacleAvoidance;
+            }
+            else if(agent.obstacleAvoidanceType == ObstacleAvoidanceType.LowQualityObstacleAvoidance)
+            {
+                agent.obstacleAvoidanceType = ObstacleAvoidanceType.NoObstacleAvoidance;
+            }
+            if (Vector3.Distance(player.transform.position, transform.position) > 100)
+            {
+
                 Destroy(gameObject);
                 break;
             }

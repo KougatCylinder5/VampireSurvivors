@@ -41,7 +41,8 @@ public class GameManager : MonoBehaviour
     public List<GameObject> weapons;
     public float luck;
 
-
+    public GameObject ScorePanel;
+    public bool end;
     // Start is called before the first frame update
     void Start()
     {
@@ -67,15 +68,27 @@ public class GameManager : MonoBehaviour
         healthBar.value = (float)(playerController.getHealth() / playerController.getMaxHealth());
         PointToTarget();
         pauseMenu(pause);
+        if (playerController.dead||end)
+        {
+            ScorePanel.SetActive(true);
+            int score = 0;
+            for(int i = 0;i < level; i++)
+            {
+                score += 15 * i;
+            }
+            score += levelXP;
+            ScorePanel.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Score: " + score.ToString();
+            ScorePanel.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Time Survived: " + (seconds / 60).ToString("00") + ":" + (seconds % 60).ToString("00");
+        }
     }
 
     private IEnumerator updateTime()
     {
-        while (true)
+        while (true && !playerController.dead)
         {
             yield return new WaitForSeconds(1);
             seconds++;
-            timer.text = "Timer: " + seconds / 60 + ":" + (seconds % 60).ToString("00");
+            timer.text = "Timer: " + (seconds / 60).ToString("00") + ":" + (seconds % 60).ToString("00");
         }
     }
 
@@ -192,6 +205,8 @@ public class GameManager : MonoBehaviour
     }
     public void RemovePointer(GameObject targetToRemove)
     {
+        Destroy(pointers[targets.IndexOf(targetToRemove)]);
+        
         pointers.RemoveAt(targets.IndexOf(targetToRemove));
         targets.Remove(targetToRemove);
     }

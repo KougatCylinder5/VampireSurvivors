@@ -8,6 +8,8 @@ public class PlayerController : MonoBehaviour
     public float maxHealth = 100;
     private CharacterController controller;
     private GameManager gameManager;
+
+    public bool dead = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -19,9 +21,17 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
 
-        if (health <= 0)
+        if (health <= 0 || dead)
         {
-            Time.timeScale = 0;
+            if (!dead)
+            {
+                foreach (Transform item in GameObject.Find("Canvas").transform)
+                {
+                    item.gameObject.SetActive(false);
+                }
+                Time.timeScale = 0;
+            }
+            dead = true;
         }
         else
         {
@@ -34,7 +44,7 @@ public class PlayerController : MonoBehaviour
     {
         float horizontalInput = Input.GetAxis("Horizontal");
         float verticalInput = Input.GetAxis("Vertical");
-        Vector3 movement = new Vector3(horizontalInput * Time.deltaTime * speed, -9.81f * Time.deltaTime, verticalInput * Time.deltaTime * speed);
+        Vector3 movement = new(horizontalInput * Time.deltaTime * speed, -9.81f * Time.deltaTime, verticalInput * Time.deltaTime * speed);
 
         controller.Move(movement);
         movement.y = 0;
