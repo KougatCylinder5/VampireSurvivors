@@ -30,7 +30,7 @@ public class GameManager : MonoBehaviour
     private GameObject player;
     private PlayerController playerController;
 
-    private List<GameObject> targets;
+    public List<GameObject> targets;
     private readonly List<GameObject> pointers = new();
     public GameObject pointerImage;
     public int pointerDistInvis;
@@ -42,7 +42,7 @@ public class GameManager : MonoBehaviour
     public float luck;
 
     public GameObject ScorePanel;
-    public bool end;
+    public static bool end;
     // Start is called before the first frame update
     void Start()
     {
@@ -68,7 +68,11 @@ public class GameManager : MonoBehaviour
         healthBar.value = (float)(playerController.getHealth() / playerController.getMaxHealth());
         PointToTarget();
         pauseMenu(pause);
-        if (playerController.dead||end)
+        if(targets.Count == 0)
+        {
+            StartCoroutine(waitForEnd());
+        }
+        if (playerController.dead)
         {
             ScorePanel.SetActive(true);
             int score = 0;
@@ -77,8 +81,13 @@ public class GameManager : MonoBehaviour
                 score += 15 * i;
             }
             score += levelXP;
-            ScorePanel.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Score: " + score.ToString();
-            ScorePanel.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Time Survived: " + (seconds / 60).ToString("00") + ":" + (seconds % 60).ToString("00");
+            TextMeshProUGUI[] text = ScorePanel.GetComponentsInChildren<TextMeshProUGUI>();
+            text[0].text = "Score: " + score.ToString();
+            text[1].text = "Time Survived: " + (seconds / 60).ToString("00") + ":" + (seconds % 60).ToString("00");
+            if (end)
+            {
+                text[2].text = "You Survived To Escape the Night";
+            }
         }
     }
 
@@ -298,7 +307,11 @@ public class GameManager : MonoBehaviour
             reward.GetComponent<Image>().sprite = Resources.Load<Sprite>(value.pathToImage);
         }
     }
-
+    public static IEnumerator waitForEnd()
+    {
+        yield return new WaitForSeconds(30);
+        end = true;
+    }
     private SortedList<int,Upgrade> readUpgrades()
     {
         TextAsset json = Resources.Load("data/upgrades") as TextAsset;

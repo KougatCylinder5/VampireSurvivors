@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -8,6 +9,7 @@ public class PlayerController : MonoBehaviour
     public float maxHealth = 100;
     private CharacterController controller;
     private GameManager gameManager;
+    [SerializeField]private TextMeshProUGUI perishText;
 
     public bool dead = false;
     // Start is called before the first frame update
@@ -20,16 +22,17 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
-        if (health <= 0 || dead)
+        Debug.Log(GameManager.end);
+        if (health <= 0 || dead || GameManager.end)
         {
-            if (!dead)
+            if (!dead )
             {
                 foreach (Transform item in GameObject.Find("Canvas").transform)
                 {
                     item.gameObject.SetActive(false);
                 }
                 Time.timeScale = 0;
+                perishText.text = "You Perished";
             }
             dead = true;
         }

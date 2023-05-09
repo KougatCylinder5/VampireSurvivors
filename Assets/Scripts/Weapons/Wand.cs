@@ -44,7 +44,8 @@ public class Wand : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        Debug.Log(projectiles.Count);
+
+        audioSource.volume = GameManager.volume;
 
         foreach(Projectile projectile in projectiles)
         {

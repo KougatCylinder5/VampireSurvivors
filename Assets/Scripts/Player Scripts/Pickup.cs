@@ -19,14 +19,8 @@ public class Pickup : MonoBehaviour
             manager.RemovePointer(gameObject);
             warningText.SetActive(false);
             pickupText.SetActive(false);
-            if (!GameObject.FindWithTag("Collectables"))
-            {
-                StartCoroutine(nameof(waitForEnd));
-            }
-            else
-            {
-                Destroy(gameObject);
-            }
+            Destroy(gameObject);
+            
         }
         else if (inRange && Input.GetKeyDown(KeyCode.E))
         {
@@ -57,9 +51,5 @@ public class Pickup : MonoBehaviour
         }
     }
 
-    public IEnumerator waitForEnd()
-    {
-        yield return new WaitForSeconds(30);
-        manager.end = true;
-    }
+    
 }

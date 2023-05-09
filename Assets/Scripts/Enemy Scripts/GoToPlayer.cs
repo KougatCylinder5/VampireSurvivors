@@ -22,7 +22,7 @@ public class GoToPlayer : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         agent.speed = 1.0f;
 
-        StartCoroutine("updatePath");
+        StartCoroutine(updatePath());
         GetComponent<MeshRenderer>().material = normalMaterial;
 
         scaling();
@@ -71,7 +71,7 @@ public class GoToPlayer : MonoBehaviour
             {
                 agent.obstacleAvoidanceType = ObstacleAvoidanceType.LowQualityObstacleAvoidance;
             }
-            else if(agent.obstacleAvoidanceType == ObstacleAvoidanceType.LowQualityObstacleAvoidance)
+            else if (agent.obstacleAvoidanceType == ObstacleAvoidanceType.LowQualityObstacleAvoidance)
             {
                 agent.obstacleAvoidanceType = ObstacleAvoidanceType.NoObstacleAvoidance;
             }
