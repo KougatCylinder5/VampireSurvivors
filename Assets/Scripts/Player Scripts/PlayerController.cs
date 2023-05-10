@@ -12,7 +12,6 @@ public class PlayerController : MonoBehaviour
     [SerializeField]private TextMeshProUGUI perishText;
 
     public bool dead = false;
-    // Start is called before the first frame update
     void Start()
     {
         controller = GetComponent<CharacterController>();
@@ -20,8 +19,7 @@ public class PlayerController : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
-    {
+    void Update() {
         Debug.Log(GameManager.end);
         if (health <= 0 || dead || GameManager.end)
         {
@@ -47,7 +45,7 @@ public class PlayerController : MonoBehaviour
     {
         float horizontalInput = Input.GetAxis("Horizontal");
         float verticalInput = Input.GetAxis("Vertical");
-        Vector3 movement = new(horizontalInput * Time.deltaTime * speed, -9.81f * Time.deltaTime, verticalInput * Time.deltaTime * speed);
+        Vector3 movement = new Vector3(horizontalInput * Time.deltaTime * speed, -9.81f * Time.deltaTime, verticalInput * Time.deltaTime * speed);
 
         controller.Move(movement);
         movement.y = 0;

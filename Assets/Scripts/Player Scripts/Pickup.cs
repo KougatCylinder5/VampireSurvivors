@@ -8,19 +8,18 @@ public class Pickup : MonoBehaviour
     bool inRange = false, warned = false;
     public GameObject warningText, pickupText;
     public int type, effect;
-    GameManager manager;
     // Update is called once per frame
     void Update()
     {
         if (warned && Input.GetKeyDown(KeyCode.E))
         {
-            manager = GameObject.Find("GameManager").GetComponent<GameManager>();
+            GameManager manager = GameObject.Find("GameManager").GetComponent<GameManager>();
             manager.spawnWave(gameObject);
             manager.RemovePointer(gameObject);
             warningText.SetActive(false);
             pickupText.SetActive(false);
             Destroy(gameObject);
-            
+
         }
         else if (inRange && Input.GetKeyDown(KeyCode.E))
         {
@@ -50,6 +49,4 @@ public class Pickup : MonoBehaviour
             warningText.SetActive(false);
         }
     }
-
-    
 }

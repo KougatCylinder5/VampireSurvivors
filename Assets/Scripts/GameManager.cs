@@ -76,7 +76,7 @@ public class GameManager : MonoBehaviour
         {
             ScorePanel.SetActive(true);
             int score = 0;
-            for(int i = 0;i < level; i++)
+            for (int i = 0; i < level; i++)
             {
                 score += 15 * i;
             }
@@ -93,11 +93,11 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator updateTime()
     {
-        while (true && !playerController.dead)
+        while (true)
         {
             yield return new WaitForSeconds(1);
             seconds++;
-            timer.text = "Timer: " + (seconds / 60).ToString("00") + ":" + (seconds % 60).ToString("00");
+            timer.text = "Timer: " + seconds / 60 + ":" + (seconds % 60).ToString("00");
         }
     }
 
@@ -214,8 +214,6 @@ public class GameManager : MonoBehaviour
     }
     public void RemovePointer(GameObject targetToRemove)
     {
-        Destroy(pointers[targets.IndexOf(targetToRemove)]);
-        
         pointers.RemoveAt(targets.IndexOf(targetToRemove));
         targets.Remove(targetToRemove);
     }
