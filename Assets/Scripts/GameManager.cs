@@ -307,7 +307,7 @@ public class GameManager : MonoBehaviour
     }
     public static IEnumerator waitForEnd()
     {
-        yield return new WaitForSeconds(30);
+        yield return new WaitForSeconds(3);
         end = true;
     }
     private SortedList<int,Upgrade> readUpgrades()
@@ -351,7 +351,7 @@ public class Upgrade
     public int weapon;
     public int chance;
     public int limit;
-    public override String ToString()
+    public override string ToString()
     {
         return name + " " + description + " " + type;
     }
