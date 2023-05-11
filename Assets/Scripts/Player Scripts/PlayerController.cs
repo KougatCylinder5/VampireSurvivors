@@ -10,8 +10,9 @@ public class PlayerController : MonoBehaviour
     private CharacterController controller;
     private GameManager gameManager;
     [SerializeField]private TextMeshProUGUI perishText;
-
     public bool dead = false;
+
+
     void Start()
     {
         controller = GetComponent<CharacterController>();

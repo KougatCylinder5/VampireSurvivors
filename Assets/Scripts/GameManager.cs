@@ -46,6 +46,7 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        end = false;
         InvokeRepeating(nameof(spawnEnemies), 1, 20f);
         player = GameObject.Find("Player");
         playerController = player.GetComponent<PlayerController>();
@@ -88,6 +89,7 @@ public class GameManager : MonoBehaviour
             {
                 text[2].text = "You Survived To Escape the Night";
             }
+
         }
     }
 
@@ -307,7 +309,7 @@ public class GameManager : MonoBehaviour
     }
     public static IEnumerator waitForEnd()
     {
-        yield return new WaitForSeconds(3);
+        yield return new WaitForSeconds(30);
         end = true;
     }
     private SortedList<int,Upgrade> readUpgrades()
