@@ -653,8 +653,8 @@ MonoBehaviour:
   enemySpawnPrefab: {fileID: 4817744621503324025, guid: 80969ebd77075094caa093b98d442767, type: 3}
   targets: []
   pointerImage: {fileID: 4038956696680788187, guid: ba3732b457a47304b93ddfb09a496c52, type: 3}
-  pointerDistInvis: 150
-  pointerDistDrop: 150
+  pointerDistInvis: 250
+  pointerDistDrop: 250
   weapons:
   - {fileID: 1768069886}
   - {fileID: 223974226}
