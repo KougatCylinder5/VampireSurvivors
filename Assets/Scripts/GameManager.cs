@@ -193,7 +193,7 @@ public class GameManager : MonoBehaviour
             int cameraXMax = Camera.main.pixelWidth - 25;
             int cameraYMax = Camera.main.pixelHeight - 25;
 
-            pointers[i].transform.position = new Vector3(Mathf.Clamp(pos.x, 25, cameraXMax), Mathf.Clamp(pos.y, 25, cameraYMax));
+            pointers[i].transform.position = new Vector3(Mathf.Clamp(pos.x, 25, cameraXMax), Mathf.Clamp(pos.y, 25, cameraYMax-100));
 
             pos.y -= cameraYMax / 2;
             pos.x -= cameraXMax / 2;
@@ -333,7 +333,7 @@ public class GameManager : MonoBehaviour
 
         for(float i = -Mathf.PI; i < Mathf.PI-0.3f; i+= Mathf.PI/9)
         {
-            Instantiate(enemies[1], new Vector3(Mathf.Sin(i),0, Mathf.Cos(i)) * 10 + pos,Quaternion.Euler(0,0,0));
+            Instantiate(enemies[0], new Vector3(Mathf.Sin(i),0, Mathf.Cos(i)) * 10 + pos,Quaternion.Euler(0,0,0));
         }
     }
     public void updateVolume(Slider slider)

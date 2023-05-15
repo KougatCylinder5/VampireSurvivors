@@ -13,6 +13,7 @@ public class GoToPlayer : MonoBehaviour
     public Material dmgMaterial;
     public Material normalMaterial;
     public GameManager manager;
+    public new Animator animation;
 
     // Start is called before the first frame update
     void Start()
@@ -23,49 +24,34 @@ public class GoToPlayer : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         agent.speed = 1.0f;
 
+        animation = GetComponent<Animator>();
+        animation.Play("Walk",0,UnityEngine.Random.Range(0f,1f));
         StartCoroutine(updatePath());
-        GetComponent<MeshRenderer>().material = normalMaterial;
 
         scaling();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        checkHealth();
-
-        
         
     }
 
-    private void checkHealth()
+    public void die()
     {
-        if (health <= 0)
+        float randomDrop = UnityEngine.Random.Range(0, 100f);
+
+        if (randomDrop <= 10)
         {
-
-            float randomDrop = UnityEngine.Random.Range(0, 100f);
-
-            if (randomDrop <= 10)
-            {
-                Instantiate(drop[0], transform.position, transform.rotation);
-            }
-            else
-            {
-                Instantiate(drop[1], transform.position, transform.rotation);
-            }
-            StopAllCoroutines();
-            Destroy(gameObject);
-            
-
+            Instantiate(drop[0], transform.position, transform.rotation);
         }
+        else
+        {
+            Instantiate(drop[1], transform.position, transform.rotation);
+        }
+        StopAllCoroutines();
+        Destroy(gameObject);
     }
 
     public void scaling()
     {
         health = (10 * Mathf.RoundToInt(manager.seconds / 30)) + 50;
         damage = (5 * Mathf.RoundToInt(manager.seconds / 30)) + 5;
-        Debug.Log(health);
-        Debug.Log(damage);
     }
     
     private IEnumerator updatePath()
@@ -73,13 +59,13 @@ public class GoToPlayer : MonoBehaviour
         while (true)
         {
             yield return new WaitForSeconds(0.5f);
-            if (Vector3.Distance(player.transform.position, transform.position) > 75)
-            {
-                agent.obstacleAvoidanceType = ObstacleAvoidanceType.LowQualityObstacleAvoidance;
-            }
-            else if (agent.obstacleAvoidanceType == ObstacleAvoidanceType.LowQualityObstacleAvoidance)
+            if (Vector3.Distance(player.transform.position, transform.position) > 25)
             {
                 agent.obstacleAvoidanceType = ObstacleAvoidanceType.NoObstacleAvoidance;
+            }
+            if(Vector3.Distance(player.transform.position, transform.position) < 25)
+            {
+                agent.obstacleAvoidanceType = ObstacleAvoidanceType.LowQualityObstacleAvoidance;
             }
             if (Vector3.Distance(player.transform.position, transform.position) > 100)
             {
@@ -89,23 +75,35 @@ public class GoToPlayer : MonoBehaviour
             agent.destination = player.transform.position;
         }
     }
-
-    public int getDamage()
-    {
-        return damage;
-    }
     public void takeDamage(float dmg)
     {
         health -= dmg;
-        GetComponent<MeshRenderer>().material = dmgMaterial;
-        StartCoroutine("resetAppearance");
+        agent.isStopped = true;
+        if (health <= 0)
+        {
+            animation.SetTrigger("Death");
+            agent.isStopped = true;
+        }
+        else
+        {
+            StartCoroutine(nameof(pauseAttack));
+        }
     }
-    public IEnumerator resetAppearance()
+    public IEnumerator pauseAttack()
     {
-
+        animation.SetTrigger("Idle");
         yield return new WaitForSeconds(0.5f);
-        GetComponent<MeshRenderer>().material = normalMaterial;
+        agent.isStopped = false;
 
+    }
+
+    public void OnCollisionStay(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Player") && health > 0)
+        {
+            player.GetComponent<PlayerController>().health -= damage * Time.deltaTime;
+            animation.SetTrigger("Attack");
+        }
     }
 
 }

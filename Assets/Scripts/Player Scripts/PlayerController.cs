@@ -72,14 +72,6 @@ public class PlayerController : MonoBehaviour
             Destroy(collision.gameObject);
         }
     }
-
-    private void OnCollisionStay(Collision collision)
-    {
-        if (collision.gameObject.CompareTag("Enemy"))
-        {
-            health -= Time.deltaTime * collision.gameObject.GetComponent<GoToPlayer>().getDamage();
-        }
-    }
     public double getHealth()
     {
         return health;
