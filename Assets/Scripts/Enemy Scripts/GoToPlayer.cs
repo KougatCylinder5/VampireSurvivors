@@ -56,9 +56,12 @@ public class GoToPlayer : MonoBehaviour
     
     private IEnumerator updatePath()
     {
+        agent.destination = player.transform.position;
+        float waitForTime = UnityEngine.Random.Range(0, 1f);
+
         while (true)
         {
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSecondsRealtime(waitForTime);
             if (Vector3.Distance(player.transform.position, transform.position) > 25)
             {
                 agent.obstacleAvoidanceType = ObstacleAvoidanceType.NoObstacleAvoidance;

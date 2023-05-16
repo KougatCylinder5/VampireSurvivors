@@ -33,8 +33,8 @@ public class GameManager : MonoBehaviour
     public List<GameObject> targets;
     private readonly List<GameObject> pointers = new();
     public GameObject pointerImage;
-    public int pointerDistInvis;
-    public int pointerDistDrop;
+    public float pointerDistInvis;
+    public float pointerDistDrop;
 
 
     private SortedList<int, Upgrade> upgrades = new();
@@ -201,16 +201,19 @@ public class GameManager : MonoBehaviour
             pointers[i].transform.eulerAngles = new Vector3(0, 0, (float)(Math.Atan2(pos.y, pos.x) * 180 / Math.PI));
             Transform pointerChild = pointers[i].transform.GetChild(0);
             pointerChild.eulerAngles = Vector3.zero;
-            pointerChild.GetComponent<TextMeshProUGUI>().text = Mathf.RoundToInt((targets.ElementAt<GameObject>(i).transform.position - player.transform.position).magnitude).ToString();
-            if (pos.magnitude < pointerDistDrop)
+
+            int dist = Mathf.RoundToInt((targets.ElementAt<GameObject>(i).transform.position - player.transform.position).magnitude);
+
+            pointerChild.GetComponent<TextMeshProUGUI>().text = dist.ToString();
+            if (dist < pointerDistDrop)
             {
-                pointers[i].GetComponent<Image>().color = new Color(255, 255, 255, 0);
-                pointerChild.GetComponent<TextMeshProUGUI>().color = new Color(255, 255, 255, 0);
+                pointers[i].GetComponent<Image>().color = new Color(255, 255, 255, (dist/pointerDistDrop) - pointerDistInvis);
+                pointerChild.GetComponent<TextMeshProUGUI>().color = new Color(255, 255, 255, (dist / pointerDistDrop) - pointerDistInvis);
             }
-            else if (pos.magnitude < pointerDistDrop + pointerDistInvis)
+            else if (dist > pointerDistDrop)
             {
-                pointers[i].GetComponent<Image>().color = new Color(255, 255, 255, (pos.magnitude - pointerDistDrop) / pointerDistInvis);
-                pointerChild.GetComponent<TextMeshProUGUI>().color = new Color(255, 255, 255, (pos.magnitude - pointerDistDrop) / pointerDistInvis);
+                pointers[i].GetComponent<Image>().color = new Color(255, 255, 255, 255);
+                pointerChild.GetComponent<TextMeshProUGUI>().color = new Color(255, 255, 255, 255);
             }
         }
     }
