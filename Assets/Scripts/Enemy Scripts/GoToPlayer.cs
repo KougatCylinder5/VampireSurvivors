@@ -26,8 +26,8 @@ public class GoToPlayer : MonoBehaviour
 
         animation = GetComponent<Animator>();
         animation.Play("Walk",0,UnityEngine.Random.Range(0f,1f));
-        StartCoroutine(updatePath());
-
+        InvokeRepeating(nameof(updatePath),0f,UnityEngine.Random.Range(0,1f));
+        
         scaling();
         
     }
@@ -54,29 +54,23 @@ public class GoToPlayer : MonoBehaviour
         damage = (5 * Mathf.RoundToInt(manager.seconds / 30)) + 5;
     }
     
-    private IEnumerator updatePath()
+    private void updatePath()
     {
-        agent.destination = player.transform.position;
-        float waitForTime = UnityEngine.Random.Range(0, 1f);
 
-        while (true)
+        if (Vector3.Distance(player.transform.position, transform.position) > 25)
         {
-            yield return new WaitForSecondsRealtime(waitForTime);
-            if (Vector3.Distance(player.transform.position, transform.position) > 25)
-            {
-                agent.obstacleAvoidanceType = ObstacleAvoidanceType.NoObstacleAvoidance;
-            }
-            if(Vector3.Distance(player.transform.position, transform.position) < 25)
-            {
-                agent.obstacleAvoidanceType = ObstacleAvoidanceType.LowQualityObstacleAvoidance;
-            }
-            if (Vector3.Distance(player.transform.position, transform.position) > 100)
-            {
-                Destroy(gameObject);
-                break;
-            }
-            agent.destination = player.transform.position;
+            agent.obstacleAvoidanceType = ObstacleAvoidanceType.NoObstacleAvoidance;
         }
+        if(Vector3.Distance(player.transform.position, transform.position) < 25)
+        {
+            agent.obstacleAvoidanceType = ObstacleAvoidanceType.LowQualityObstacleAvoidance;
+        }
+        if (Vector3.Distance(player.transform.position, transform.position) > 100)
+        {
+            Destroy(gameObject);
+        }
+        agent.SetDestination(player.transform.position);
+
     }
     public void takeDamage(float dmg)
     {

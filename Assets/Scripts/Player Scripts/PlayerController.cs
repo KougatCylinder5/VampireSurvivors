@@ -4,6 +4,8 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
 
+    Animator m_Animator;
+
     public float speed = 5;
     public float health = 100;
     public float maxHealth = 100;
@@ -17,6 +19,7 @@ public class PlayerController : MonoBehaviour
     {
         controller = GetComponent<CharacterController>();
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        m_Animator = gameObject.GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -52,7 +55,13 @@ public class PlayerController : MonoBehaviour
         movement.y = 0;
         if (movement.sqrMagnitude != 0)
         {
+            m_Animator.SetBool("Still", false);
+
             transform.rotation = Quaternion.Slerp(transform.rotation,Quaternion.LookRotation(movement),0.25f);
+        }
+        else
+        {
+            m_Animator.SetBool("Still", true);
         }
 
         

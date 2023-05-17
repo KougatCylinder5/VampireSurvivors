@@ -26,13 +26,13 @@ public class Wand : MonoBehaviour
     [SerializeField]
     private LayerMask enemyLayer;
     [SerializeField]
-    private List<Projectile> projectiles = new List<Projectile>();
+    private List<Projectile> projectiles = new();
 
     public AudioSource audioSource;
     // Start is called before the first frame update
     private void Start()
     {
-        StartCoroutine("fireWand");
+        StartCoroutine(nameof(fireWand));
         rb = GetComponent<Rigidbody>();
         sc = GetComponent<SphereCollider>();
         sc.isTrigger = true;
@@ -58,7 +58,7 @@ public class Wand : MonoBehaviour
 
     private void OnEnable()
     {
-        StartCoroutine("fireWand");
+        StartCoroutine(nameof(fireWand));
         rb = GetComponent<Rigidbody>();
         sc = GetComponent<SphereCollider>();
         sc.isTrigger = true;
