@@ -161,6 +161,8 @@ public class GameManager : MonoBehaviour
         }
         rewardPanel.SetActive(false);
         Time.timeScale = 1;
+
+        player.GetComponent<Animator>().Play("Decider");
     }
     public void limitUpgrade(StoreReward store)
     {

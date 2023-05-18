@@ -48,7 +48,7 @@ public class Runetracer : MonoBehaviour
 
         x = radius * Mathf.Cos(degrees);
         z = radius * Mathf.Sin(degrees);
-        transform.position = Vector3.Lerp(transform.position, new Vector3(x, 0, z) + player.transform.position, 0.5f);
+        transform.position = Vector3.Lerp(transform.position, new Vector3(x, 1, z) + player.transform.position, 0.5f);
     }
 
     public void OnTriggerEnter(Collider other)
