@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using TMPro;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -47,7 +48,7 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         end = false;
-        InvokeRepeating(nameof(spawnEnemies), 1, 20f);
+        StartCoroutine(nameof(spawnEnemies));
         player = GameObject.Find("Player");
         playerController = player.GetComponent<PlayerController>();
         spawnSpawns();
@@ -236,26 +237,39 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private void spawnEnemies()
+    private IEnumerator spawnEnemies()
     {
-        if (GameObject.FindGameObjectsWithTag("Enemy").Length < 200)
+        yield return new WaitForSeconds(1);
+
+        while (true)
         {
-            List<GameObject> closeInOrder = enemySpawns.OrderBy(t => (t.transform.position - player.transform.position).sqrMagnitude).ToList<GameObject>();
-            int startPos = 0;
-            if (Vector3.Distance(closeInOrder[0].transform.position, player.transform.position) < 20)
+            if (GameObject.FindGameObjectsWithTag("Enemy").Length < 200)
             {
-                startPos++;
-            }
-            for (int i = startPos; i < startPos + level + 2; i++)
-            {
-                for (int j = 0; j < UnityEngine.Random.Range(5, 11); j++)
+                List<GameObject> closeInOrder = enemySpawns.OrderBy(t => (t.transform.position - player.transform.position).sqrMagnitude).ToList<GameObject>();
+                int startPos = 0;
+                if (Vector3.Distance(closeInOrder[0].transform.position, player.transform.position) < 20)
                 {
-                    Instantiate(enemies[0], closeInOrder[i].transform.position, closeInOrder[i].transform.rotation);
+                    startPos++;
                 }
+                for (int i = startPos; i < startPos + level + 2; i++)
+                {
 
+                    
+
+                    yield return new WaitForSeconds(2f);
+
+                    NavMeshPath path = new();
+
+                    Instantiate(enemies[0], closeInOrder[i].transform.position, closeInOrder[i].transform.rotation).GetComponent<NavMeshAgent>().CalculatePath(player.transform.position,path);
+                    for (int j = 0; j < UnityEngine.Random.Range(4, 10); j++)
+                    {
+                        Instantiate(enemies[0], closeInOrder[i].transform.position, closeInOrder[i].transform.rotation).GetComponent<NavMeshAgent>().SetPath(path);
+                    }
+
+                }
             }
+            yield return new WaitForSeconds(20);
         }
-
     }
 
     public void increaseXP()
@@ -338,7 +352,7 @@ public class GameManager : MonoBehaviour
 
         for(float i = -Mathf.PI; i < Mathf.PI-0.3f; i+= Mathf.PI/9)
         {
-            Instantiate(enemies[0], new Vector3(Mathf.Sin(i),0, Mathf.Cos(i)) * 10 + pos,Quaternion.Euler(0,0,0));
+            Instantiate(enemies[0], new Vector3(Mathf.Sin(i),0, Mathf.Cos(i)) * 10 + pos,Quaternion.Euler(0,0,0)).GetComponent<NavMeshAgent>().SetDestination(player.transform.position);
         }
     }
     public void updateVolume(Slider slider)

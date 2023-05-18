@@ -62,10 +62,6 @@ public class PlayerController : MonoBehaviour
 
             transform.rotation = Quaternion.Slerp(transform.rotation,Quaternion.LookRotation(movement),0.25f);
         }
-        else
-        {
-            
-        }
 
 
         

@@ -23,10 +23,10 @@ public class GoToPlayer : MonoBehaviour
 
         agent = GetComponent<NavMeshAgent>();
         agent.speed = 1.0f;
+        InvokeRepeating(nameof(updatePath), 5f, UnityEngine.Random.Range(0, 1f));
 
         animation = GetComponent<Animator>();
         animation.Play("Walk",0,UnityEngine.Random.Range(0f,1f));
-        InvokeRepeating(nameof(updatePath),0f,UnityEngine.Random.Range(0,1f));
         
         scaling();
         
@@ -69,11 +69,7 @@ public class GoToPlayer : MonoBehaviour
         {
             Destroy(gameObject);
         }
-        try
-        {
-            agent.SetDestination(player.transform.position);
-        }
-        catch
+        if(!agent.SetDestination(player.transform.position))
         {
             Destroy(gameObject);
         }
