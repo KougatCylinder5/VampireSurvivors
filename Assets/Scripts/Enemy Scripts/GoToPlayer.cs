@@ -65,11 +65,18 @@ public class GoToPlayer : MonoBehaviour
         {
             agent.obstacleAvoidanceType = ObstacleAvoidanceType.LowQualityObstacleAvoidance;
         }
-        if (Vector3.Distance(player.transform.position, transform.position) > 100)
+        if (Vector3.Distance(player.transform.position, transform.position) > 65)
         {
             Destroy(gameObject);
         }
-        agent.SetDestination(player.transform.position);
+        try
+        {
+            agent.SetDestination(player.transform.position);
+        }
+        catch
+        {
+            Destroy(gameObject);
+        }
 
     }
     public void takeDamage(float dmg)

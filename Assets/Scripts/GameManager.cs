@@ -238,7 +238,7 @@ public class GameManager : MonoBehaviour
 
     private void spawnEnemies()
     {
-        if (GameObject.FindGameObjectsWithTag("Enemy").Length < 300)
+        if (GameObject.FindGameObjectsWithTag("Enemy").Length < 200)
         {
             List<GameObject> closeInOrder = enemySpawns.OrderBy(t => (t.transform.position - player.transform.position).sqrMagnitude).ToList<GameObject>();
             int startPos = 0;
