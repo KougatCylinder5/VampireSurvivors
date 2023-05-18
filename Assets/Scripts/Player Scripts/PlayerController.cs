@@ -53,6 +53,9 @@ public class PlayerController : MonoBehaviour
 
         controller.Move(movement);
         movement.y = 0;
+        m_Animator.SetBool("Still", movement.sqrMagnitude < 0.1f);
+        m_Animator.SetFloat("WalkSpeed", Mathf.Clamp01(movement.sqrMagnitude/Time.deltaTime * 5));
+        Debug.Log(movement);
         if (movement.sqrMagnitude != 0)
         {
             m_Animator.SetBool("Still", false);
@@ -61,8 +64,9 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            m_Animator.SetBool("Still", true);
+            
         }
+
 
         
     }
