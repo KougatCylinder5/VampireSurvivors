@@ -3,7 +3,7 @@
     {
       "name": "Whip Damage",
       "description": "\nWhip does more damage to enemies \nDamage +20",
-      "pathToImage": "textures/attackUpgrade",
+      "pathToImage": "textures/WhipDamage",
       "type": 0,
       "effect": 20,
       "weapon": 0,
@@ -13,7 +13,7 @@
     {
       "name": "Whip Attack Speed",
       "description": "\nFaster whipping \nAttack speed +0.5s",
-      "pathToImage": "textures/attackSpeedUpgrade",
+      "pathToImage": "textures/WhipAttackSpeed",
       "type": 1,
       "effect": -0.5,
       "weapon": 0,
@@ -81,7 +81,7 @@
     {
       "name": "Max Health",
       "description": "\nAdds 50 health to your health pool \nMax Health +50",
-      "pathToImage": "textures/",
+      "pathToImage": "textures/HealthPlus",
       "type": 4,
       "effect": 50,
       "weapon": -1,
@@ -91,7 +91,7 @@
     {
       "name": "Health",
       "description": "\nRestores 25 health to your health pool \nHealth +25",
-      "pathToImage": "textures/",
+      "pathToImage": "textures/HealthBonus",
       "type": 4,
       "effect": 25,
       "weapon": -1,

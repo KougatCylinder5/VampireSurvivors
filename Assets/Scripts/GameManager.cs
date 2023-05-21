@@ -292,16 +292,19 @@ public class GameManager : MonoBehaviour
         {
             pause.SetActive(!pause.activeSelf);
             Time.timeScale = Time.timeScale < 0.1f ? 1 : 0;
+            player.GetComponent<Animator>().Play("Decider");
         }
         if (button.name.Equals("Resume"))
         {
             pause.SetActive(false);
             Time.timeScale = 1;
+            player.GetComponent<Animator>().Play("Decider");
         }
         if (button.name.Equals("Exit"))
         {
             SceneManager.LoadScene("Title Screen");
             Time.timeScale = 1;
+
         }
     }
     private void displayUpgrades()
