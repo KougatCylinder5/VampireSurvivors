@@ -23,7 +23,7 @@
     {
       "name": "Unlock Runetracer",
       "description": "",
-      "pathToImage": "textures/",
+      "pathToImage": "textures/UnLockRunetracer",
       "type": 2,
       "weapon": 1,
       "chance": 25,
@@ -32,7 +32,7 @@
     {
       "name": "Runetracer Damage",
       "description": "\nRuneTracer does more damage to enemies \nDamage +20",
-      "pathToImage": "textures/attackUpgrade",
+      "pathToImage": "textures/RunetracerDamage",
       "type": 0,
       "effect": 20,
       "weapon": 1,
@@ -42,7 +42,7 @@
     {
       "name": "Runetracer Speed",
       "description": "\nRunetracer Orbits Faster \nOrbit speed +1.0s",
-      "pathToImage": "textures/attackSpeedUpgrade",
+      "pathToImage": "textures/RunetracerSpeed",
       "type": 1,
       "effect": 1,
       "weapon": 1,
@@ -52,7 +52,7 @@
     {
       "name": "Unlock Wand",
       "description": "",
-      "pathToImage": "textures/",
+      "pathToImage": "textures/WandUnlock",
       "type": 2,
       "weapon": 2,
       "chance": 25,
@@ -61,7 +61,7 @@
     {
       "name": "Wand Damage",
       "description": "\nWand does more damage to enemies \nDamage +20",
-      "pathToImage": "textures/attackUpgrade",
+      "pathToImage": "textures/WandDamage",
       "type": 0,
       "effect": 20,
       "weapon": 2,
@@ -71,7 +71,7 @@
     {
       "name": "Wand Speed",
       "description": "\nWand Fires Faster \nShooting speed +0.5s",
-      "pathToImage": "textures/attackSpeedUpgrade",
+      "pathToImage": "textures/WandSpeed",
       "type": 1,
       "effect": -0.5,
       "weapon": 2,
